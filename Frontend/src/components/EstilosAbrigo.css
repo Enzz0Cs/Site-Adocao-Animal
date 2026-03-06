@@ -1,0 +1,79 @@
+/* Cores: Rosa (#FF69B4), Preto (#212529), Branco (#FFFFFF) */
+
+
+.custom-navbar {
+    background-color: #FF69B4; 
+    color: #FFFFFF;
+}
+
+.custom-title {
+    color: #FFFFFF;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.custom-btn {
+    background-color: #212529; 
+    border-color: #212529;
+    color: #FFFFFF;
+    font-weight: 600;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.custom-btn:hover {
+    background-color: #000000;
+    border-color: #000000;
+    color: #FF69B4; 
+}
+
+.custom-subtitle {
+    color: #FF69B4;
+    font-weight: 600;
+}
+
+.custom-card {
+    border: 1px solid #FF69B4; 
+    background-color: #FFFFFF;
+}
+
+.custom-card-title {
+    color: #212529;
+    border-bottom: 2px solid #FF69B4;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.custom-delete-btn {
+    background-color: #212529;
+    border-color: #212529;
+    color: #FF69B4; 
+    transition: background-color 0.3s;
+}
+
+.custom-delete-btn:hover {
+    background-color: #495057;
+    border-color: #495057;
+    color: #FFFFFF;
+}
+
+
+.custom-modal-content {
+    border: 2px solid #FF69B4;
+}
+
+.custom-modal-header {
+    background-color: #212529; 
+    color: #FFFFFF;
+    border-bottom: 1px solid #FF69B4;
+}
+
+.custom-modal-title {
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+.bg-pink {
+    background-color: #FF69B4 !important;
+    color: #212529 !important;
+    font-weight: 500;
+}
