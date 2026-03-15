@@ -5,7 +5,9 @@ import dotenv from 'dotenv';
 // Importação das Rotas
 import animalRoutes from './src/routes/animalRoutes.js';
 import vacinaRoutes from './src//routes/vacinasRoutes.js';
-import adotanteRoutes from './src//routes/AdotanteRoutes.js'; // Certifique-se que o nome do arquivo está correto
+import adotanteRoutes from './src//routes/AdotanteRoutes.js';
+import authRoutes from './src/routes/authRoutes.js';
+//  // Certifique-se que o nome do arquivo está correto
 
 dotenv.config();
 
@@ -27,6 +29,7 @@ app.get('/', (req, res) => {
 app.use('/api', animalRoutes);
 app.use('/api', vacinaRoutes);
 app.use('/api', adotanteRoutes);
+app.use('/api', authRoutes);
 
 
 app.use((req, res) => {
