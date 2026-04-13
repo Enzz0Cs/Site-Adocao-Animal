@@ -9,6 +9,7 @@ import authRoutes from './src/routes/authRoutes.js';
 import estoqueRoutes from './src/routes/estoqueRoutes.js';
 import historicoRoutes from './src/routes/historicoRoutes.js';
 import procedimentosVeterinariosRoutes from './src/routes/procedimentosVeterinariosRoutes.js';
+import validacaoRoutes from "./src/routes/validacaoRoutes.js";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use('/api', authRoutes);
 app.use('/api', estoqueRoutes);
 app.use('/api', historicoRoutes);
 app.use('/api', procedimentosVeterinariosRoutes);
+app.use("/api", validacaoRoutes);
 
 
 app.use((req, res) => {

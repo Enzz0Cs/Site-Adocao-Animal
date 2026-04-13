@@ -90,3 +90,9 @@ CREATE TABLE IF NOT EXISTS procedimentos_veterinarios (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (animal_id) REFERENCES animais(id)
 ) ENGINE=InnoDB;
+-- RF-F3 - Validação de Aptidão para Adoção
+
+ALTER TABLE animais 
+ADD COLUMN status_adocao VARCHAR(20) DEFAULT 'Em análise',
+ADD COLUMN justificativa TEXT,
+ADD COLUMN data_validacao DATETIME;
