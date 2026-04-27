@@ -10,6 +10,7 @@ import estoqueRoutes from './src/routes/estoqueRoutes.js';
 import historicoRoutes from './src/routes/historicoRoutes.js';
 import procedimentosVeterinariosRoutes from './src/routes/procedimentosVeterinariosRoutes.js';
 import validacaoRoutes from "./src/routes/validacaoRoutes.js";
+import adocaoRoutes from "./src/routes/adocaoRoutes.js";
 
 dotenv.config();
 
@@ -24,7 +25,6 @@ app.get('/', (req, res) => {
     res.json({ message: 'API Abrigo está rodando perfeitamente!' });
 });
 
-
 app.use('/api', animalRoutes);
 app.use('/api', vacinaRoutes);
 app.use('/api', adotanteRoutes);
@@ -33,7 +33,7 @@ app.use('/api', estoqueRoutes);
 app.use('/api', historicoRoutes);
 app.use('/api', procedimentosVeterinariosRoutes);
 app.use("/api", validacaoRoutes);
-
+app.use("/api", adocaoRoutes);
 
 app.use((req, res) => {
     res.status(404).json({ error: 'Rota não encontrada' });

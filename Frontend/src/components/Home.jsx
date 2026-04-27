@@ -1,16 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaPaw, FaSyringe, FaUserFriends, FaBoxes, FaUserCircle } from 'react-icons/fa';
-import { FaStethoscope } from 'react-icons/fa';
+import { FaPaw, FaSyringe, FaUserFriends, FaBoxes, FaUserCircle, FaHeart, FaStethoscope } from 'react-icons/fa'; // Adicionado FaHeart
 import './EstilosAbrigo.css';
 
 const Home = () => {
     const navigate = useNavigate();
-
-    // Pegamos o objeto inteiro do usuário
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-
-    // Se não estiver logado, volta para a raiz (Login)
     if (!usuario) {
         window.location.href = "/";
         return null;
@@ -55,6 +50,16 @@ const Home = () => {
                         </div>
                     )}
 
+                    {(usuario.nivel === "admin" || usuario.nivel === "funcionario") && (
+                        <div className="col-md-3">
+                            <div className="card h-100 shadow p-4 border-0">
+                                <FaHeart size={50} color="#FF69B4" className="mx-auto mb-3" />
+                                <h3>Adoções</h3>
+                                <Link to="/adocoes" className="btn btn-primary mt-3">Registrar</Link>
+                            </div>
+                        </div>
+                    )}
+
                     {(usuario.nivel === "admin" || usuario.nivel === "responsavel_tecnico") && (
                         <div className="col-md-3">
                             <div className="card h-100 shadow p-4 border-0">
@@ -84,6 +89,7 @@ const Home = () => {
                             </div>
                         </div>
                     )}
+
                     {(usuario.nivel === "admin" || usuario.nivel === "responsavel_tecnico" || usuario.nivel === "funcionario") && (
                         <div className="col-md-3">
                             <div className="card h-100 shadow p-4 border-0">

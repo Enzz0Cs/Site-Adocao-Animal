@@ -7,6 +7,7 @@ import GerenciadorAbrigoAnimais from './components/GerenciadorAbrigoAnimais';
 import GerenciarVacinas from './components/GerenciarVacinas';
 import GerenciarAdotante from './components/GerenciarAdotante';
 import GerenciarEstoque from './components/GerenciarEstoque';
+import GerenciadorAdocoes from './components/GerenciadorAdocoes';
 import Login from './components/Login';
 import PrivateRoute from "./components/PrivateRoute";
 import ProtectedRoute from './components/ProtectedRoute';
@@ -15,9 +16,9 @@ import GerenciarProcedimentosVeterinarios from './components/GerenciarProcedimen
 function App() {
   return (
     <BrowserRouter>
-
       <Routes>
         <Route path="/" element={<Login />} />
+
         <Route
           path="/home"
           element={
@@ -26,6 +27,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/animais"
           element={
@@ -36,6 +38,18 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        <Route
+          path="/adocoes"
+          element={
+            <PrivateRoute>
+              <ProtectedRoute niveisPermitidos={["admin", "funcionario"]}>
+                <GerenciadorAdocoes />
+              </ProtectedRoute>
+            </PrivateRoute>
+          }
+        />
+
         <Route
           path="/vacinas"
           element={
@@ -46,6 +60,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/adotantes"
           element={
@@ -56,23 +71,28 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/estoque"
           element={
-            <ProtectedRoute niveisPermitidos={["admin", "funcionario"]}>
-              <GerenciarEstoque />
-            </ProtectedRoute>
+            <PrivateRoute>
+              <ProtectedRoute niveisPermitidos={["admin", "funcionario"]}>
+                <GerenciarEstoque />
+              </ProtectedRoute>
+            </PrivateRoute>
           }
         />
+
         <Route
           path="/procedimentos-veterinarios"
           element={
-            <GerenciarProcedimentosVeterinarios />
+            <PrivateRoute>
+              <GerenciarProcedimentosVeterinarios />
+            </PrivateRoute>
           }
         />
 
       </Routes>
-
     </BrowserRouter>
   );
 }

@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS animais (
     sexo ENUM('Macho', 'Fêmea') NOT NULL,
     raca VARCHAR(100),
     porte ENUM('Pequeno', 'Médio', 'Grande') NOT NULL,
-    idade INT NOT NULL
+    idade INT NOT NULL,
+    status_adocao VARCHAR(20) NOT NULL DEFAULT 'Em análise'
 ) ENGINE=InnoDB;
 
 -- 4. Tabela de Vacinas
@@ -90,6 +91,18 @@ CREATE TABLE IF NOT EXISTS procedimentos_veterinarios (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (animal_id) REFERENCES animais(id)
 ) ENGINE=InnoDB;
+
+-- 9. Tabela de Adoções
+CREATE TABLE IF NOT EXISTS adocoes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    animal_id INT NOT NULL,
+    adotante_id INT NOT NULL,
+    data_adocao DATE NOT NULL,
+    observacoes TEXT,
+    FOREIGN KEY (animal_id) REFERENCES animais(id),
+    FOREIGN KEY (adotante_id) REFERENCES adotantes(id)
+) ENGINE=InnoDB;
+
 -- RF-F3 - Validação de Aptidão para Adoção
 
 ALTER TABLE animais 

@@ -3,7 +3,6 @@ import EstoqueModel from "../models/EstoqueModel.js";
 class EstoqueController {
     static async listar(req, res) {
         try {
-            // Se houver uma query "?critico=true", lista apenas o que está acabando
             const { critico } = req.query;
             let itens;
 
@@ -37,15 +36,13 @@ class EstoqueController {
     static async criar(req, res) {
         try {
             const { nome_item, categoria, quantidade_atual, unidade_medida, quantidade_minima, data_validade } = req.body;
-
-            // Validação básica de campos obrigatórios
             if (!nome_item || !categoria || quantidade_atual === undefined || !unidade_medida) {
                 return res.status(400).json({
                     error: 'Campos essenciais (Nome, Categoria, Quantidade e Unidade) devem ser preenchidos.'
                 });
             }
 
-            // Tratamento de data (mesma lógica que você usou nos animais)
+
             let dataValidadeSQL = data_validade;
             if (data_validade && data_validade.includes('/')) {
                 const [dia, mes, ano] = data_validade.split('/');

@@ -32,43 +32,43 @@ class AnimalController {
     }
     static async validar(req, res) {
 
-    try {
+        try {
 
-        const { animalId, justificativa } = req.body;
+            const { animalId, justificativa } = req.body;
 
-        const vacinas = await AnimalModel.verificarVacinas(animalId);
-        const procedimentos = await AnimalModel.verificarProcedimentos(animalId);
+            const vacinas = await AnimalModel.verificarVacinas(animalId);
+            const procedimentos = await AnimalModel.verificarProcedimentos(animalId);
 
-        let status = "Apto";
+            let status = "Apto";
 
-        if (vacinas.length === 0) {
-            status = "Inapto";
+            if (vacinas.length === 0) {
+                status = "Inapto";
+            }
+
+            if (procedimentos.some(p => p.situacao === "Pendente")) {
+                status = "Inapto";
+            }
+
+            await AnimalModel.salvarValidacao({
+                animalId,
+                status,
+                justificativa
+            });
+
+            res.json({
+                status,
+                message: "Validação realizada"
+            });
+
+        } catch (error) {
+
+            res.status(500).json({
+                error: "Erro ao validar animal"
+            });
+
         }
-
-        if (procedimentos.some(p => p.situacao === "Pendente")) {
-            status = "Inapto";
-        }
-
-        await AnimalModel.salvarValidacao({
-            animalId,
-            status,
-            justificativa
-        });
-
-        res.json({
-            status,
-            message: "Validação realizada"
-        });
-
-    } catch (error) {
-
-        res.status(500).json({
-            error: "Erro ao validar animal"
-        });
 
     }
-
-}
 
     static async criar(req, res) {
         try {
@@ -105,8 +105,7 @@ class AnimalController {
     static async atualizar(req, res) {
         try {
             const { id } = req.params;
-            const { nome_animal, data_cadastro, sexo, raca, porte, idade } = req.body;
-
+            const { nome_animal, data_cadastro, sexo, raca, porte, idade, status_adocao } = req.body;
             if (!nome_animal || !data_cadastro || !sexo || !raca || !porte || !idade) {
                 return res.status(400).json({
                     error: 'Todos os campos devem ser preenchidos.'
@@ -125,7 +124,8 @@ class AnimalController {
                 sexo,
                 raca,
                 porte,
-                idade
+                idade,
+                status_adocao
             });
 
             if (!animalAtualizado) {
