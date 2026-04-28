@@ -145,7 +145,11 @@ const GerenciadorAbrigoAnimais = () => {
     const validarAnimal = async () => {
         try {
             const id = animalSelecionado.id || animalSelecionado.animal_id;
-            await AnimalService.validar({ animalId: id, justificativa });
+            await AnimalService.validar({
+                animalId: id,
+                status: "Apto", // ou lógica automática depois
+                justificativa: justificativa
+            });
             setMensagem({ tipo: 'bg-pink', texto: 'Aptidão técnica validada!' });
             setShowValidarModal(false);
             setJustificativa("");

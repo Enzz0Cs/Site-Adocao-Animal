@@ -6,6 +6,7 @@ import './EstilosAbrigo.css';
 import AdotanteService from '../services/AdotanteService';
 
 function GerenciarAdotantes() {
+
   const [adotantes, setAdotantes] = useState([]);
   const [filtro, setFiltro] = useState('');
   const [mensagem, setMensagem] = useState({ tipo: '', texto: '' });
@@ -19,12 +20,13 @@ function GerenciarAdotantes() {
     TelefoneAdotante: '',
     RuaNumeroAdotante: '',
     BairroAdotante: '',
-    CEPAdotante: ''
+    CEPAdotante: '',
+    email: '' // 🔥 NOVO
   };
 
   const [formData, setFormData] = useState(initialFormState);
 
-
+  // máscaras
   const mascaraCPF = (v) => v.replace(/\D/g, '').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2').slice(0, 14);
   const mascaraTelefone = (v) => v.replace(/\D/g, '').replace(/^(\d{2})(\d{5})(\d{4})/, '($1) $2-$3').slice(0, 15);
   const mascaraCEP = (v) => v.replace(/\D/g, '').replace(/(\d{5})(\d)/, '$1-$2').slice(0, 9);
@@ -33,10 +35,12 @@ function GerenciarAdotantes() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     let val = value;
+
     if (name === 'CPFAdotante') val = mascaraCPF(value);
     if (name === 'TelefoneAdotante') val = mascaraTelefone(value);
     if (name === 'CEPAdotante') val = mascaraCEP(value);
     if (name === 'RGAdotante') val = mascaraRG(value);
+
     setFormData({ ...formData, [name]: val });
   };
 
@@ -44,22 +48,36 @@ function GerenciarAdotantes() {
     try {
       const dados = await AdotanteService.listar(filtro);
       setAdotantes(Array.isArray(dados) ? dados : []);
-    } catch (error) {
+    } catch {
       setMensagem({ tipo: 'danger', texto: 'Erro ao carregar adotantes.' });
     }
   };
 
-  useEffect(() => { carregarDados(); }, [filtro]);
+  useEffect(() => {
+    carregarDados();
+  }, [filtro]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.email) {
+      setMensagem({ tipo: 'danger', texto: 'Email é obrigatório!' });
+      return;
+    }
+
     try {
       await AdotanteService.salvar(formData);
-      setMensagem({ tipo: 'bg-pink', texto: editando ? 'Cadastro atualizado!' : 'Adotante cadastrado!' });
+
+      setMensagem({
+        tipo: 'bg-pink',
+        texto: editando ? 'Cadastro atualizado!' : 'Adotante cadastrado!'
+      });
+
       setFormData(initialFormState);
       setEditando(false);
       carregarDados();
-    } catch (error) {
+
+    } catch {
       setMensagem({ tipo: 'danger', texto: 'Erro ao salvar dados.' });
     }
   };
@@ -72,6 +90,7 @@ function GerenciarAdotantes() {
 
   return (
     <Container className="mt-4 pb-5">
+
       <header className="d-flex align-items-center mb-4 gap-3">
         <Link to="/home" className="btn btn-dark custom-btn-back" style={{ border: '1px solid #FF69B4' }}>
           <ArrowLeft size={20} color="#FF69B4" />
@@ -82,111 +101,215 @@ function GerenciarAdotantes() {
       </header>
 
       {mensagem.texto && (
-        <Alert variant={mensagem.tipo === 'bg-pink' ? 'light' : 'danger'} className={mensagem.tipo} dismissible onClose={() => setMensagem({ tipo: '', texto: '' })}>
+        <Alert
+          variant={mensagem.tipo === 'bg-pink' ? 'light' : 'danger'}
+          className={mensagem.tipo}
+          dismissible
+          onClose={() => setMensagem({ tipo: '', texto: '' })}
+        >
           {mensagem.texto}
         </Alert>
       )}
 
       <Card className="custom-card shadow-sm mb-4 border-0">
         <Card.Header className="custom-navbar text-white">
-          <h5 className="m-0 text-white">{editando ? '📝 Editar Adotante' : '👤 Novo Cadastro'}</h5>
+          <h5 className="m-0 text-white">
+            {editando ? '📝 Editar Adotante' : '👤 Novo Cadastro'}
+          </h5>
         </Card.Header>
+
         <Card.Body className="bg-white">
+
           <Form onSubmit={handleSubmit}>
+
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold">Nome Completo *</Form.Label>
-                  <Form.Control name="NomeCompletoAdotante" value={formData.NomeCompletoAdotante} onChange={handleInputChange} required />
+                  <Form.Control
+                    name="NomeCompletoAdotante"
+                    value={formData.NomeCompletoAdotante}
+                    onChange={handleInputChange}
+                    required
+                  />
                 </Form.Group>
               </Col>
+
               <Col md={3}>
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold">CPF *</Form.Label>
-                  <Form.Control name="CPFAdotante" value={formData.CPFAdotante} onChange={handleInputChange} placeholder="000.000.000-00" required />
+                  <Form.Control
+                    name="CPFAdotante"
+                    value={formData.CPFAdotante}
+                    onChange={handleInputChange}
+                    placeholder="000.000.000-00"
+                    required
+                  />
                 </Form.Group>
               </Col>
+
               <Col md={3}>
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold">RG</Form.Label>
-                  <Form.Control name="RGAdotante" value={formData.RGAdotante} onChange={handleInputChange} placeholder="Números e X" />
+                  <Form.Control
+                    name="RGAdotante"
+                    value={formData.RGAdotante}
+                    onChange={handleInputChange}
+                  />
                 </Form.Group>
               </Col>
             </Row>
+
+            {/* 🔥 EMAIL */}
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="fw-bold">Email *</Form.Label>
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="exemplo@email.com"
+                    required
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
             <Row>
               <Col md={3}>
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold">Telefone *</Form.Label>
-                  <Form.Control name="TelefoneAdotante" value={formData.TelefoneAdotante} onChange={handleInputChange} required />
+                  <Form.Control
+                    name="TelefoneAdotante"
+                    value={formData.TelefoneAdotante}
+                    onChange={handleInputChange}
+                    required
+                  />
                 </Form.Group>
               </Col>
+
               <Col md={3}>
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold">CEP</Form.Label>
-                  <Form.Control name="CEPAdotante" value={formData.CEPAdotante} onChange={handleInputChange} placeholder="00000-000" />
+                  <Form.Control
+                    name="CEPAdotante"
+                    value={formData.CEPAdotante}
+                    onChange={handleInputChange}
+                  />
                 </Form.Group>
               </Col>
+
               <Col md={3}>
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold">Bairro</Form.Label>
-                  <Form.Control name="BairroAdotante" value={formData.BairroAdotante} onChange={handleInputChange} />
+                  <Form.Control
+                    name="BairroAdotante"
+                    value={formData.BairroAdotante}
+                    onChange={handleInputChange}
+                  />
                 </Form.Group>
               </Col>
+
               <Col md={3}>
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold">Rua e Nº *</Form.Label>
-                  <Form.Control name="RuaNumeroAdotante" value={formData.RuaNumeroAdotante} onChange={handleInputChange} required />
+                  <Form.Control
+                    name="RuaNumeroAdotante"
+                    value={formData.RuaNumeroAdotante}
+                    onChange={handleInputChange}
+                    required
+                  />
                 </Form.Group>
               </Col>
             </Row>
+
             <div className="d-flex gap-2">
               <Button className="custom-btn flex-grow-1" type="submit">
                 {editando ? 'Atualizar Adotante' : 'Salvar Adotante'}
               </Button>
+
               {editando && (
-                <Button variant="secondary" onClick={() => { setFormData(initialFormState); setEditando(false); }}>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setFormData(initialFormState);
+                    setEditando(false);
+                  }}
+                >
                   Cancelar
                 </Button>
               )}
             </div>
+
           </Form>
         </Card.Body>
       </Card>
 
       <InputGroup className="mb-4 shadow-sm">
-        <InputGroup.Text className="bg-white"><Search size={18} /></InputGroup.Text>
-        <Form.Control placeholder="Pesquisar por nome ou CPF..." onChange={e => setFiltro(e.target.value)} />
+        <InputGroup.Text className="bg-white">
+          <Search size={18} />
+        </InputGroup.Text>
+        <Form.Control
+          placeholder="Pesquisar por nome, CPF ou email..."
+          onChange={e => setFiltro(e.target.value)}
+        />
       </InputGroup>
 
       <Card className="custom-card shadow-sm border-0">
         <Table responsive hover className="text-center align-middle mb-0 bg-white">
+
           <thead className="bg-pink text-white">
             <tr>
               <th>Nome</th>
               <th>CPF</th>
+              <th>Email</th> {/* 🔥 NOVO */}
               <th>Telefone</th>
-              <th>Cidade/Bairro</th>
+              <th>Bairro</th>
               <th>Ações</th>
             </tr>
           </thead>
+
           <tbody>
             {adotantes.length > 0 ? adotantes.map(a => (
               <tr key={a.AdotanteID}>
                 <td className="fw-bold">{a.NomeCompletoAdotante}</td>
                 <td>{a.CPFAdotante}</td>
+                <td>{a.email}</td> {/* 🔥 NOVO */}
                 <td>{a.TelefoneAdotante}</td>
                 <td>{a.BairroAdotante || 'Não informado'}</td>
+
                 <td>
-                  <Button variant="link" className="text-primary me-2" onClick={() => prepararEdicao(a)}><Edit size={18} /></Button>
-                  <Button variant="link" className="text-danger" onClick={() => { if (window.confirm('Excluir?')) AdotanteService.excluir(a.AdotanteID).then(carregarDados) }}>
+                  <Button
+                    variant="link"
+                    className="text-primary me-2"
+                    onClick={() => prepararEdicao(a)}
+                  >
+                    <Edit size={18} />
+                  </Button>
+
+                  <Button
+                    variant="link"
+                    className="text-danger"
+                    onClick={() => {
+                      if (window.confirm('Excluir?'))
+                        AdotanteService.excluir(a.AdotanteID).then(carregarDados)
+                    }}
+                  >
                     <Trash2 size={18} />
                   </Button>
                 </td>
               </tr>
             )) : (
-              <tr><td colSpan="5" className="py-4 text-muted">Nenhum adotante encontrado.</td></tr>
+              <tr>
+                <td colSpan="6" className="py-4 text-muted">
+                  Nenhum adotante encontrado.
+                </td>
+              </tr>
             )}
           </tbody>
+
         </Table>
       </Card>
     </Container>

@@ -12,6 +12,15 @@ export default {
             throw error;
         }
     },
+    finalizar: async (id) => {
+    try {
+        const res = await axios.post(`${API_URL}/${id}/finalizar`);
+        return res.data;
+    } catch (error) {
+        console.error("Erro ao finalizar adoção:", error);
+        throw error;
+    }
+},
 
     registrar: async (dados) => {
         try {
@@ -22,13 +31,27 @@ export default {
             throw error;
         }
     },
+
     excluir: async (id) => {
         try {
             const res = await axios.delete(`${API_URL}/${id}`);
             return res.data;
         } catch (error) {
-            console.error("Erro ao excluir adoção no Service:", error);
+            console.error("Erro ao excluir adoção:", error);
             throw error;
         }
+    },
+
+    // 🔥 NOVO — ASSINAR DOCUMENTO
+    assinar: async (id) => {
+        try {
+            const res = await axios.post(`${API_URL}/${id}/assinar`);
+            return res.data;
+        } catch (error) {
+            console.error("Erro ao assinar adoção:", error);
+            throw error;
+        }
+        
     }
+    
 };

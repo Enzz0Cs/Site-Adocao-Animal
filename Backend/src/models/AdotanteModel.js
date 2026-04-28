@@ -12,7 +12,8 @@ class AdotanteModel {
                 Telefone AS TelefoneAdotante,
                 RuaNumero AS RuaNumeroAdotante,
                 Bairro AS BairroAdotante,
-                CEP AS CEPAdotante
+                CEP AS CEPAdotante,
+                email AS email
             FROM adotante 
             ORDER BY id DESC
         `;
@@ -30,7 +31,8 @@ class AdotanteModel {
                 Telefone AS TelefoneAdotante,
                 RuaNumero AS RuaNumeroAdotante,
                 Bairro AS BairroAdotante,
-                CEP AS CEPAdotante
+                CEP AS CEPAdotante,
+                email AS email
             FROM adotante 
             WHERE id = ?
         `;
@@ -47,9 +49,11 @@ class AdotanteModel {
                 Telefone, 
                 RuaNumero, 
                 Bairro, 
-                CEP
-            ) VALUES (?, ?, ?, ?, ?, ?, ?)
-        `.trim();
+                CEP,
+                email
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `;
 
         const values = [
             dados.NomeCompletoAdotante,
@@ -58,7 +62,8 @@ class AdotanteModel {
             dados.TelefoneAdotante,
             dados.RuaNumeroAdotante,
             dados.BairroAdotante,
-            dados.CEPAdotante
+            dados.CEPAdotante,
+            dados.email // ✅ corrigido
         ];
 
         const [result] = await pool.query(sql, values);
@@ -75,9 +80,10 @@ class AdotanteModel {
                 Telefone = ?, 
                 RuaNumero = ?, 
                 Bairro = ?, 
-                CEP = ?
+                CEP = ?,
+                email = ?
             WHERE id = ?
-        `.trim();
+        `;
 
         const values = [
             dados.NomeCompletoAdotante,
@@ -87,6 +93,7 @@ class AdotanteModel {
             dados.RuaNumeroAdotante,
             dados.BairroAdotante,
             dados.CEPAdotante,
+            dados.email, // ✅ agora atualiza
             id
         ];
 
@@ -100,12 +107,16 @@ class AdotanteModel {
     }
 
     static async excluir(id) {
-        const [result] = await pool.query('DELETE FROM adotante WHERE id = ?', [id]);
+        const [result] = await pool.query(
+            'DELETE FROM adotante WHERE id = ?', 
+            [id]
+        );
         return result.affectedRows > 0;
     }
 
     static async filtrar(termo) {
         const termoBusca = `%${termo}%`;
+
         const sql = `
             SELECT 
                 id AS AdotanteID,
@@ -115,14 +126,23 @@ class AdotanteModel {
                 Telefone AS TelefoneAdotante,
                 RuaNumero AS RuaNumeroAdotante,
                 Bairro AS BairroAdotante,
-                CEP AS CEPAdotante
+                CEP AS CEPAdotante,
+                email AS email
             FROM adotante 
             WHERE NomeCompleto LIKE ? 
                OR CPF LIKE ? 
                OR RG LIKE ?
+               OR email LIKE ?
             ORDER BY id DESC
         `;
-        const [rows] = await pool.query(sql, [termoBusca, termoBusca, termoBusca]);
+
+        const [rows] = await pool.query(sql, [
+            termoBusca,
+            termoBusca,
+            termoBusca,
+            termoBusca
+        ]);
+
         return rows;
     }
 }
