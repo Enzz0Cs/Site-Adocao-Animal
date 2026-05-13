@@ -109,6 +109,60 @@ static async salvarValidacao({ animalId, status, justificativa }) {
         [status, justificativa, animalId]
     );
 }
+
+static async relatorio(filtros) {
+
+    let sql = `SELECT * FROM animais WHERE 1=1`;
+    const values = [];
+
+    if (filtros.dataInicio && filtros.dataFim) {
+        sql += ` AND data_cadastro BETWEEN ? AND ?`;
+        values.push(filtros.dataInicio, filtros.dataFim);
+    }
+
+    if (filtros.status) {
+        sql += ` AND status_adocao = ?`;
+        values.push(filtros.status);
+    }
+
+    sql += ` ORDER BY data_cadastro DESC`;
+
+    const [rows] = await pool.query(sql, values);
+
+    return rows;
+}
+static async relatorioSaude(nome) {
+
+    let sql = `
+        SELECT
+            av.id,
+            a.nome_animal,
+            av.vacina_id,
+            av.data_aplicacao,
+            av.observacoes
+
+        FROM animal_vacina av
+
+        INNER JOIN animais a
+            ON av.animal_id = a.id
+    `;
+
+    const values = [];
+
+    if (nome) {
+
+        sql += ` WHERE a.nome_animal LIKE ?`;
+
+        values.push(`%${nome}%`);
+    }
+
+    sql += ` ORDER BY av.data_aplicacao DESC`;
+
+    const [rows] = await pool.query(sql, values);
+
+    return rows;
+}
+
 }
 
 export default AnimalModel;

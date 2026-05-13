@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaPaw, FaSyringe, FaUserFriends, FaBoxes, FaUserCircle, FaHeart, FaStethoscope } from 'react-icons/fa'; // Adicionado FaHeart
+import { FaPaw, FaSyringe, FaUserFriends, FaChartBar, FaBoxes, FaUserCircle, FaHeart, FaStethoscope } from 'react-icons/fa'; // Adicionado FaHeart
 import './EstilosAbrigo.css';
 
 const Home = () => {
@@ -96,6 +96,28 @@ const Home = () => {
                                 <FaStethoscope size={50} color="#FF69B4" className="mx-auto mb-3" />
                                 <h3>Procedimentos</h3>
                                 <Link to="/procedimentos-veterinarios" className="btn btn-primary mt-3">Acessar</Link>
+                            </div>
+                        </div>
+                    )}
+                    {(usuario.nivel === "admin" || usuario.nivel === "funcionario") && (
+                        <div className="col-md-3">
+                            <div className="card h-100 shadow p-4 border-0">
+
+                                <FaChartBar
+                                    size={50}
+                                    color="#FF69B4"
+                                    className="mx-auto mb-3"
+                                />
+
+                                <h3>Relatórios</h3>
+
+                                <Link
+                                    to="/relatorios"
+                                    className="btn btn-primary mt-3"
+                                >
+                                    Acessar
+                                </Link>
+
                             </div>
                         </div>
                     )}

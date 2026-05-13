@@ -132,6 +132,40 @@ Eu, ${nomeAdotante}, declaro que estou ciente da responsabilidade pela adoção 
   static async excluir(id) {
     await pool.query("DELETE FROM adocoes WHERE id = ?", [id]);
   }
+  static async relatorioAdocoes(status) {
+
+    let sql = `
+        SELECT
+            a.id,
+            an.nome_animal,
+            ad.NomeCompleto AS adotante,
+            a.data_adocao,
+            a.status
+
+        FROM adocoes a
+
+        INNER JOIN animais an
+            ON a.animal_id = an.id
+
+        INNER JOIN adotante ad
+            ON a.adotante_id = ad.id
+    `;
+
+    const values = [];
+
+    if (status) {
+
+    sql += ` WHERE TRIM(a.status) = TRIM(?)`;
+
+    values.push(status);
+}
+
+    sql += ` ORDER BY a.data_adocao DESC`;
+
+    const [rows] = await pool.query(sql, values);
+
+    return rows;
+}
 }
 
 export default AdocaoModel;
