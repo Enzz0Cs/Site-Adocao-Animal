@@ -12,6 +12,7 @@ import Login from './components/Login';
 import PrivateRoute from "./components/PrivateRoute";
 import ProtectedRoute from './components/ProtectedRoute';
 import GerenciarProcedimentosVeterinarios from './components/GerenciarProcedimentosVeterinarios';
+import GerenciarVeterinarios from './components/GerenciarVeterinarios';
 
 function App() {
   return (
@@ -89,6 +90,17 @@ function App() {
             <PrivateRoute>
               <GerenciarProcedimentosVeterinarios />
             </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/veterinarios"
+          element={
+            <PrivateRoute>
+              <ProtectedRoute niveisPermitidos={["admin", "responsavel_tecnico"]}>
+                 <GerenciarVeterinarios />
+              </ProtectedRoute>
+           </PrivateRoute>
           }
         />
 

@@ -63,6 +63,16 @@ const Home = () => {
                     {(usuario.nivel === "admin" || usuario.nivel === "responsavel_tecnico") && (
                         <div className="col-md-3">
                             <div className="card h-100 shadow p-4 border-0">
+                                <FaStethoscope size={50} color="#FF69B4" className="mx-auto mb-3" />
+                                <h3>Veterinários</h3>
+                                <Link to="/veterinarios" className="btn btn-primary mt-3">Gerenciar</Link>
+                            </div>
+                        </div>
+                    )}
+
+                    {(usuario.nivel === "admin" || usuario.nivel === "responsavel_tecnico") && (
+                        <div className="col-md-3">
+                            <div className="card h-100 shadow p-4 border-0">
                                 <FaSyringe size={50} color="#FF69B4" className="mx-auto mb-3" />
                                 <h3>Vacinas</h3>
                                 <Link to="/vacinas" className="btn btn-primary mt-3">Ver Estoque</Link>

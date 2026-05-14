@@ -109,3 +109,16 @@ ALTER TABLE animais
 ADD COLUMN status_adocao VARCHAR(20) DEFAULT 'Em análise',
 ADD COLUMN justificativa TEXT,
 ADD COLUMN data_validacao DATETIME;
+
+CREATE TABLE IF NOT EXISTS veterinario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    NomeCompleto VARCHAR(100) NOT NULL,
+    CPF VARCHAR(14) NOT NULL,
+    CRMV VARCHAR(20) NOT NULL UNIQUE,
+    Especialidade VARCHAR(100),
+    Telefone VARCHAR(15),
+    email VARCHAR(100),
+    Endereco VARCHAR(200),
+    Status ENUM('Ativo', 'Inativo') DEFAULT 'Ativo',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
