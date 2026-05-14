@@ -3,6 +3,7 @@ import AdocaoController from '../controllers/AdocaoController.js';
 
 const router = express.Router();
 
+router.get('/adocoes/relatorio', AdocaoController.relatorio);
 router.get('/adocoes', AdocaoController.listar);
 router.post('/adocoes', AdocaoController.criar);
 router.get('/adocoes/confirmar/:token', AdocaoController.confirmar);

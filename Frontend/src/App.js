@@ -3,6 +3,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Home from './components/Home';
+import Relatorios from "./components/Relatorios";
+import RelatorioAdocoes from "./components/RelatorioAdocoes";
+import RelatorioAnimais from "./components/RelatorioAnimais";
+import RelatorioSaude from "./components/RelatorioSaude";
 import GerenciadorAbrigoAnimais from './components/GerenciadorAbrigoAnimais';
 import GerenciarVacinas from './components/GerenciarVacinas';
 import GerenciarAdotante from './components/GerenciarAdotante';
@@ -104,9 +108,45 @@ function App() {
           }
         />
 
+        <Route
+  path="/relatorio-animais"
+  element={
+    <PrivateRoute>
+      <RelatorioAnimais />
+    </PrivateRoute>
+  }
+/>
+
+<Route
+  path="/relatorio-saude"
+  element={
+    <PrivateRoute>
+      <RelatorioSaude />
+    </PrivateRoute>
+  }
+/>
+<Route
+  path="/relatorio-adocoes"
+  element={
+    <PrivateRoute>
+      <RelatorioAdocoes />
+    </PrivateRoute>
+  }
+/>
+<Route
+  path="/relatorios"
+  element={
+    <PrivateRoute>
+      <Relatorios />
+    </PrivateRoute>
+  }
+/>
+
+
       </Routes>
     </BrowserRouter>
   );
+  
 }
 
 export default App;

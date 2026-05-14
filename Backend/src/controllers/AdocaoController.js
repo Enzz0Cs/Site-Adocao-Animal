@@ -30,6 +30,25 @@ class AdocaoController {
     await AdocaoModel.excluir(req.params.id);
     res.json({ message: "Excluído" });
   }
+  static async relatorio(req, res) {
+
+    try {
+
+        const { status } = req.query;
+
+const dados = await AdocaoModel.relatorioAdocoes(status);
+
+        res.json(dados);
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            error: "Erro ao gerar relatório de adoções"
+        });
+    }
+}
 }
 
 export default AdocaoController;

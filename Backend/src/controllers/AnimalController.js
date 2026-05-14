@@ -152,6 +152,46 @@ class AnimalController {
             res.status(500).json({ error: 'Erro ao excluir animal' });
         }
     }
+    static async relatorio(req, res) {
+    try {
+
+        const filtros = {
+            dataInicio: req.query.dataInicio,
+            dataFim: req.query.dataFim,
+            status: req.query.status
+        };
+
+        const dados = await AnimalModel.relatorio(filtros);
+
+        res.json(dados);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Erro ao gerar relatório"
+        });
+    }
+}
+static async relatorioSaude(req, res) {
+
+    try {
+
+        const { nome } = req.query;
+
+        const dados =
+            await AnimalModel.relatorioSaude(nome);
+
+        res.json(dados);
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            error: "Erro ao gerar relatório de saúde"
+        });
+    }
+}
 }
 
 export default AnimalController;
