@@ -29,7 +29,7 @@ app.use('/api', animalRoutes);
 app.use('/api', vacinaRoutes);
 app.use('/api', adotanteRoutes);
 app.use('/api', authRoutes);
-app.use('/api', estoqueRoutes);
+app.use('/api/estoque', estoqueRoutes);
 app.use('/api', historicoRoutes);
 app.use('/api', procedimentosVeterinariosRoutes);
 app.use("/api", validacaoRoutes);

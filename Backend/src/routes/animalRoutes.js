@@ -8,8 +8,6 @@ router.get('/animais/:id', AnimalController.buscarPorId);
 router.post('/animais', AnimalController.criar);
 router.put('/animais/:id', AnimalController.atualizar);
 router.delete('/animais/:id', AnimalController.excluir);
-
-// RF-F3
 router.post('/validar-adocao', AnimalController.validar);
 
 export default router;

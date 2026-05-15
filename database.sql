@@ -109,3 +109,15 @@ ALTER TABLE animais
 ADD COLUMN status_adocao VARCHAR(20) DEFAULT 'Em análise',
 ADD COLUMN justificativa TEXT,
 ADD COLUMN data_validacao DATETIME;
+
+-- 10. Tabela de Saídas de Estoque (Sincronizada com a sua imagem)
+CREATE TABLE IF NOT EXISTS saídas_estoque (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    estoque_id INT NOT NULL,
+    quantidade_saída DECIMAL(10, 2) NOT NULL,
+    destino TEXT,
+    data_saida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    responsável_id INT NOT NULL,
+    CONSTRAINT fk_estoque FOREIGN KEY (estoque_id) REFERENCES estoque(id) ON DELETE CASCADE,
+    CONSTRAINT fk_responsavel FOREIGN KEY (responsável_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB;

@@ -1,111 +1,122 @@
 import EstoqueModel from "../models/EstoqueModel.js";
+import pool from "../config/database.js";
 
 class EstoqueController {
+
     static async listar(req, res) {
         try {
             const { critico } = req.query;
-            let itens;
-
-            if (critico === 'true') {
-                itens = await EstoqueModel.listarCriticos();
-            } else {
-                itens = await EstoqueModel.listarTudo();
-            }
-
+            const itens = (critico === 'true')
+                ? await EstoqueModel.listarCriticos()
+                : await EstoqueModel.listarTudo();
             res.json(itens);
         } catch (error) {
-            console.error('ERRO NO BANCO (Estoque):', error.message);
-            res.status(500).json({ error: 'Erro ao listar estoque: ' + error.message });
+            res.status(500).json({ error: error.message });
         }
     }
+
+    static async listarHistorico(req, res) {
+        try {
+            const sql = `
+                SELECT s.id, s.quantidade_saída, s.destino, s.data_saida, 
+                       e.nome_item, u.nome as responsavel 
+                FROM saídas_estoque s
+                JOIN estoque e ON s.estoque_id = e.id
+                JOIN usuarios u ON s.responsável_id = u.id
+                ORDER BY s.data_saida DESC LIMIT 15
+            `;
+            const [rows] = await pool.query(sql);
+            res.json(rows);
+        } catch (error) {
+            res.status(500).json({ error: 'Erro ao listar histórico' });
+        }
+    }
+
 
     static async buscarPorId(req, res) {
         try {
             const { id } = req.params;
-            const item = await EstoqueModel.buscarPorId(id);
-            if (!item) {
-                return res.status(404).json({ error: 'Item não encontrado no estoque' });
-            }
+            const idLimpo = id.toString().replace(/\D/g, '');
+
+            const item = await EstoqueModel.buscarPorId(idLimpo);
+            if (!item) return res.status(404).json({ error: 'Não encontrado' });
             res.json(item);
         } catch (error) {
-            console.error('Erro ao buscar item:', error.message);
-            res.status(500).json({ error: 'Erro ao buscar item' });
+            res.status(500).json({ error: error.message });
         }
     }
 
-    static async criar(req, res) {
+
+    static async salvar(req, res) {
         try {
-            const { nome_item, categoria, quantidade_atual, unidade_medida, quantidade_minima, data_validade } = req.body;
-            if (!nome_item || !categoria || quantidade_atual === undefined || !unidade_medida) {
+            const id = req.params.id || req.body.id;
+            const { nome_item, categoria, quantidade_atual, unidade_medida, quantidade_minima, data_validade, peso_volume } = req.body;
+
+
+            let dataFormatada = data_validade;
+            if (data_validade && data_validade.includes('T')) {
+                dataFormatada = data_validade.split('T')[0];
+            }
+
+            const dados = {
+                nome_item,
+                categoria,
+                quantidade_atual: Number(quantidade_atual),
+                unidade_medida,
+                quantidade_minima: Number(quantidade_minima || 0),
+                data_validade: dataFormatada,
+                peso_volume: peso_volume ? Number(peso_volume) : null
+            };
+
+            if (id) {
+                const idLimpo = id.toString().replace(/\D/g, '');
+                await EstoqueModel.atualizar(idLimpo, dados);
+                res.json({ message: 'Atualizado com sucesso!' });
+            } else {
+                await EstoqueModel.criar(dados);
+                res.status(201).json({ message: 'Cadastrado com sucesso!' });
+            }
+        } catch (error) {
+            console.error('Erro ao salvar item:', error.message);
+            res.status(500).json({ error: 'Erro ao salvar item no banco' });
+        }
+    }
+
+
+    static async registrarSaida(req, res) {
+        try {
+            const { estoque_id, quantidade, destino, responsavel_id } = req.body;
+
+
+            const item = await EstoqueModel.buscarPorId(estoque_id);
+            if (!item || Number(item.quantidade_atual) < Number(quantidade)) {
                 return res.status(400).json({
-                    error: 'Campos essenciais (Nome, Categoria, Quantidade e Unidade) devem ser preenchidos.'
+                    error: `Saldo insuficiente. Disponível: ${item ? item.quantidade_atual : 0}`
                 });
             }
 
-
-            let dataValidadeSQL = data_validade;
-            if (data_validade && data_validade.includes('/')) {
-                const [dia, mes, ano] = data_validade.split('/');
-                dataValidadeSQL = `${ano}-${mes}-${dia}`;
-            }
-
-            const novoItem = await EstoqueModel.criar({
-                nome_item,
-                categoria,
-                quantidade_atual,
-                unidade_medida,
-                quantidade_minima: quantidade_minima || 0,
-                data_validade: dataValidadeSQL
-            });
-
-            res.status(201).json(novoItem);
+            await EstoqueModel.registrarMovimentacaoSaida(estoque_id, quantidade, destino, responsavel_id);
+            res.json({ message: 'Saída registrada!' });
         } catch (error) {
-            console.error('Erro ao cadastrar item no estoque:', error.message);
-            res.status(500).json({ error: 'Erro ao criar item: ' + error.message });
+            res.status(500).json({ error: error.message });
         }
     }
 
-    static async atualizar(req, res) {
-        try {
-            const { id } = req.params;
-            const { nome_item, categoria, quantidade_atual, unidade_medida, quantidade_minima, data_validade } = req.body;
-
-            let dataValidadeSQL = data_validade;
-            if (data_validade && data_validade.includes('/')) {
-                const [dia, mes, ano] = data_validade.split('/');
-                dataValidadeSQL = `${ano}-${mes}-${dia}`;
-            }
-
-            const itemAtualizado = await EstoqueModel.atualizar(id, {
-                nome_item,
-                categoria,
-                quantidade_atual,
-                unidade_medida,
-                quantidade_minima,
-                data_validade: dataValidadeSQL
-            });
-
-            if (!itemAtualizado) {
-                return res.status(404).json({ error: 'Item não encontrado para atualização.' });
-            }
-
-            res.json(itemAtualizado);
-        } catch (error) {
-            console.error('Erro ao atualizar estoque:', error.message);
-            res.status(500).json({ error: 'Erro ao atualizar item' });
-        }
-    }
 
     static async excluir(req, res) {
         try {
             const { id } = req.params;
-            const sucesso = await EstoqueModel.excluir(id);
-            if (!sucesso) {
-                return res.status(404).json({ error: 'Item não encontrado para exclusão' });
+            const idLimpo = id.toString().replace(/\D/g, '');
+
+            if (!idLimpo) return res.status(400).json({ error: 'ID inválido' });
+
+            const sucesso = await EstoqueModel.excluir(idLimpo);
+            if (sucesso) {
+                res.json({ message: 'Item removido!' });
+            } else {
+                res.status(404).json({ error: 'Item não encontrado' });
             }
-            res.json({ message: 'Item removido do estoque com sucesso' });
         } catch (error) {
-            console.error('Erro ao excluir item:', error.message);
             res.status(500).json({ error: 'Erro ao excluir item' });
         }
     }
