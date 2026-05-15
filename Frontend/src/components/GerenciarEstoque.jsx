@@ -103,7 +103,7 @@ const GerenciarEstoque = () => {
 
     return (
         <Container className="mt-4 pb-5">
-            <header className="d-flex align-items-center mb-4 gap-3">
+            <header data-tour="page-header" className="d-flex align-items-center mb-4 gap-3">
                 <Link to="/home" className="btn btn-dark custom-btn-back">
                     <ArrowLeft size={20} />
                 </Link>
@@ -116,7 +116,7 @@ const GerenciarEstoque = () => {
                 </Alert>
             )}
 
-            <Card className="custom-card mb-4 shadow-sm">
+            <Card data-tour="formulario" className="custom-card mb-4 shadow-sm">
                 <Card.Body>
                     <Form onSubmit={handleSubmit}>
                         <Row>
@@ -186,14 +186,14 @@ const GerenciarEstoque = () => {
                                 />
                             </Col>
                         </Row>
-                        <Button type="submit" className="custom-btn mt-3 w-100">Salvar</Button>
+                        <Button data-tour="salvar" type="submit" className="custom-btn mt-3 w-100">Salvar</Button>
                     </Form>
                 </Card.Body>
             </Card>
 
             <Row>
                 <Col md={8}>
-                    <Card className="custom-card shadow-sm">
+                    <Card data-tour="listagem" className="custom-card shadow-sm">
                         <Card.Header className="bg-pink text-white d-flex align-items-center gap-2">
                             <History size={20} /> Inventário Atual
                         </Card.Header>
@@ -213,7 +213,7 @@ const GerenciarEstoque = () => {
                                             <td className="text-start ps-3">{i.nome_item}</td>
                                             <td>{i.quantidade_atual} {i.unidade_medida}</td>
                                             <td>{i.quantidade_minima}</td>
-                                            <td>
+                                            <td data-tour="acoes">
                                                 <Button variant="link" className="text-warning p-1" onClick={() => prepararSaida(i)}>
                                                     <LogOut size={18} />
                                                 </Button>
@@ -235,7 +235,7 @@ const GerenciarEstoque = () => {
                 </Col>
 
                 <Col md={4}>
-                    <Card className="custom-card shadow-sm border-dark">
+                    <Card data-tour="historico" className="custom-card shadow-sm border-dark">
                         <Card.Header className="bg-dark text-white">🕒 Histórico de Saídas</Card.Header>
                         <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
                             <Table size="sm" hover responsive className="text-center mb-0 small">

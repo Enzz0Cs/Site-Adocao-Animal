@@ -10,8 +10,7 @@ class AdotanteService {
      * @returns {Promise<Array>}
      */
     listar(termo = '') {
-        // Usamos o parâmetro 'busca' ou 'termo' conforme configurado no seu backend
-        const url = termo ? `${API_URL}?termo=${termo}` : API_URL;
+        const url = termo ? `${API_URL}?busca=${termo}` : API_URL;
         return axios.get(url).then(response => response.data);
     }
 

@@ -88,7 +88,7 @@ function GerenciarVeterinarios() {
   return (
     <Container className="mt-4 pb-5">
 
-      <header className="d-flex align-items-center mb-4 gap-3">
+      <header data-tour="page-header" className="d-flex align-items-center mb-4 gap-3">
         <Link to="/home" className="btn btn-dark custom-btn-back" style={{ border: '1px solid #FF69B4' }}>
           <ArrowLeft size={20} color="#FF69B4" />
         </Link>
@@ -108,7 +108,7 @@ function GerenciarVeterinarios() {
         </Alert>
       )}
 
-      <Card className="custom-card shadow-sm mb-4 border-0">
+      <Card data-tour="formulario" className="custom-card shadow-sm mb-4 border-0">
         <Card.Header className="custom-navbar text-white">
           <h5 className="m-0 text-white">
             {editando ? '📝 Editar Veterinário' : '🩺 Novo Cadastro'}
@@ -229,7 +229,7 @@ function GerenciarVeterinarios() {
             </Row>
 
             <div className="d-flex gap-2">
-              <Button className="custom-btn flex-grow-1" type="submit">
+              <Button data-tour="salvar" className="custom-btn flex-grow-1" type="submit">
                 {editando ? 'Atualizar Veterinário' : 'Salvar Veterinário'}
               </Button>
 
@@ -250,7 +250,7 @@ function GerenciarVeterinarios() {
         </Card.Body>
       </Card>
 
-      <InputGroup className="mb-4 shadow-sm">
+      <InputGroup data-tour="busca" className="mb-4 shadow-sm">
         <InputGroup.Text className="bg-white">
           <Search size={18} />
         </InputGroup.Text>
@@ -260,7 +260,7 @@ function GerenciarVeterinarios() {
         />
       </InputGroup>
 
-      <Card className="custom-card shadow-sm border-0">
+      <Card data-tour="listagem" className="custom-card shadow-sm border-0">
         <Table responsive hover className="text-center align-middle mb-0 bg-white">
 
           <thead className="bg-pink text-white">
@@ -283,7 +283,7 @@ function GerenciarVeterinarios() {
                 <td>{v.EspecialidadeVeterinario || 'Não informada'}</td>
                 <td>{v.TelefoneVeterinario}</td>
                 <td>{v.email}</td>
-                <td>
+                <td data-tour="acoes">
                   <span className={`badge ${v.StatusVeterinario === 'Ativo' ? 'bg-success' : 'bg-secondary'}`}>
                     {v.StatusVeterinario}
                   </span>

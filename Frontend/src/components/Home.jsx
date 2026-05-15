@@ -18,11 +18,11 @@ const Home = () => {
 
     return (
         <div className="container-fluid p-0 min-vh-100 bg-light">
-            <header className="navbar custom-navbar shadow-sm p-4 mb-5" style={{ backgroundColor: '#FF69B4' }}>
+            <header data-tour="cabecalho" className="navbar custom-navbar shadow-sm p-4 mb-5" style={{ backgroundColor: '#FF69B4' }}>
                 <div className="container d-flex justify-content-between align-items-center">
                     <h1 className="custom-title m-0 text-white">🐾 Abrigo Teodoro Sampaio</h1>
 
-                    <div className="d-flex align-items-center gap-3">
+                    <div data-tour="usuario" className="d-flex align-items-center gap-3">
                         <div className="text-white d-flex align-items-center gap-2 border-end pe-3">
                             <FaUserCircle size={25} />
                             <div className="d-flex flex-column" style={{ lineHeight: '1.2' }}>
@@ -39,9 +39,9 @@ const Home = () => {
             </header>
 
             <main className="container pb-5">
-                <div className="row justify-content-center g-4 text-center">
+                <div data-tour="modulos" className="row justify-content-center g-4 text-center">
                     {(usuario.nivel === "admin" || usuario.nivel === "funcionario") && (
-                        <div className="col-md-3">
+                        <div data-tour="relatorios" className="col-md-3">
                             <div className="card h-100 shadow p-4 border-0">
                                 <FaPaw size={50} color="#FF69B4" className="mx-auto mb-3" />
                                 <h3>Animais</h3>

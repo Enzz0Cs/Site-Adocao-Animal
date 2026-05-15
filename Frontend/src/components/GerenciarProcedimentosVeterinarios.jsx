@@ -160,7 +160,7 @@ const GerenciarProcedimentosVeterinarios = () => {
 
   return (
     <Container className="py-4">
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      <div data-tour="page-header" className="d-flex justify-content-between align-items-center mb-3">
         <h2>Controle de Procedimentos Veterinários</h2>
         <Link to="/home" className="btn btn-outline-secondary">
           <ArrowLeft size={18} className="me-2" />
@@ -178,7 +178,7 @@ const GerenciarProcedimentosVeterinarios = () => {
         </Alert>
       )}
 
-      <Card className="shadow-sm mb-4">
+      <Card data-tour="formulario" className="shadow-sm mb-4">
         <Card.Body>
           <h5 className="mb-3">
             {formData.ProcedimentoID ? 'Editar Procedimento Veterinário' : 'Novo Procedimento Veterinário'}
@@ -282,7 +282,7 @@ const GerenciarProcedimentosVeterinarios = () => {
             </Row>
 
             <div className="d-flex gap-2">
-              <Button type="submit" variant="success">
+              <Button data-tour="salvar" type="submit" variant="success">
                 Salvar
               </Button>
 
@@ -296,7 +296,7 @@ const GerenciarProcedimentosVeterinarios = () => {
         </Card.Body>
       </Card>
 
-      <Card className="shadow-sm">
+      <Card data-tour="listagem" className="shadow-sm">
         <Card.Body>
           <h5 className="mb-3">Procedimentos cadastrados</h5>
 
@@ -326,7 +326,7 @@ const GerenciarProcedimentosVeterinarios = () => {
                     <td>{p.descricao}</td>
                     <td>{p.veterinario}</td>
                     <td>{p.situacao}</td>
-                    <td className="d-flex gap-2">
+                    <td data-tour="acoes" className="d-flex gap-2">
                       <Button variant="warning" size="sm" onClick={() => handleEditar(p)}>
                         <Edit size={16} />
                       </Button>

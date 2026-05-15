@@ -17,10 +17,12 @@ import PrivateRoute from "./components/PrivateRoute";
 import ProtectedRoute from './components/ProtectedRoute';
 import GerenciarProcedimentosVeterinarios from './components/GerenciarProcedimentosVeterinarios';
 import GerenciarVeterinarios from './components/GerenciarVeterinarios';
+import TourGuia from './components/TourGuia';
 
 function App() {
   return (
     <BrowserRouter>
+      <TourGuia />
       <Routes>
         <Route path="/" element={<Login />} />
 

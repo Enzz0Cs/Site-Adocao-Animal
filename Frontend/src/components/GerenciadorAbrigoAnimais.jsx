@@ -161,7 +161,7 @@ const GerenciadorAbrigoAnimais = () => {
 
     return (
         <div className="container-fluid p-0 min-vh-100 bg-light">
-            <header className="navbar custom-navbar shadow-sm p-3 mb-4 sticky-top">
+            <header data-tour="page-header" className="navbar custom-navbar shadow-sm p-3 mb-4 sticky-top">
                 <div className="container-fluid">
                     <div className="d-flex align-items-center">
                         <Link to="/home" className="btn btn-dark me-3">
@@ -171,14 +171,14 @@ const GerenciadorAbrigoAnimais = () => {
                             🐾 Abrigo de Teodoro Sampaio
                         </span>
                     </div>
-                    <Button className="custom-btn" onClick={() => handleShow()}>
+                    <Button data-tour="abrir-formulario" className="custom-btn" onClick={() => handleShow()}>
                         <PlusCircle size={18} className="me-2" /> Cadastrar
                     </Button>
                 </div>
             </header>
 
             <Container>
-                <InputGroup className="mb-4">
+                <InputGroup data-tour="busca" className="mb-4">
                     <InputGroup.Text><Search size={16} /></InputGroup.Text>
                     <Form.Control
                         placeholder="Buscar por nome, raça ou status..."
@@ -196,7 +196,7 @@ const GerenciadorAbrigoAnimais = () => {
                 {isLoading ? (
                     <div className="text-center py-5">Sincronizando com o MySQL...</div>
                 ) : (
-                    <Row>
+                    <Row data-tour="listagem">
                         {animais.map(animal => (
                             <Col md={6} lg={4} key={animal.id || animal.animal_id} className="mb-4">
                                 <Card className="custom-card shadow-sm border-0 h-100">
@@ -216,7 +216,7 @@ const GerenciadorAbrigoAnimais = () => {
                                             </span>
                                         </p>
                                     </Card.Body>
-                                    <Card.Footer className="bg-white border-0 d-flex gap-2 justify-content-end pb-3">
+                                    <Card.Footer data-tour="acoes" className="bg-white border-0 d-flex gap-2 justify-content-end pb-3">
                                         <Button variant="outline-primary" size="sm" onClick={() => abrirModalVacina(animal)} title="Vacinas">💉</Button>
                                         <Button variant="outline-success" size="sm" onClick={() => abrirValidacao(animal)}>
                                             <ShieldCheck size={16} />

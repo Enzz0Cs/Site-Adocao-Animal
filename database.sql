@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 ) ENGINE=InnoDB;
 
 -- 2. Tabela de Adotantes
-CREATE TABLE IF NOT EXISTS adotantes (
+CREATE TABLE IF NOT EXISTS adotante (
     id INT AUTO_INCREMENT PRIMARY KEY,
     NomeCompleto VARCHAR(255) NOT NULL,
     CPF VARCHAR(14) NOT NULL UNIQUE,
@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS adotantes (
     Telefone VARCHAR(20),
     RuaNumero VARCHAR(255),
     Bairro VARCHAR(100),
-    CEP VARCHAR(10)
+    CEP VARCHAR(10),
+    email VARCHAR(120)
 ) ENGINE=InnoDB;
 
 -- 3. Tabela de Animais
@@ -78,7 +79,22 @@ CREATE TABLE IF NOT EXISTS historico (
     FOREIGN KEY (animal_id) REFERENCES animais(id)
 ) ENGINE=InnoDB;
 
--- 8. Tabela de Procedimentos Veterinários 
+-- 8. Tabela de Veterinários
+CREATE TABLE IF NOT EXISTS veterinario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    NomeCompleto VARCHAR(255) NOT NULL,
+    CPF VARCHAR(14) NOT NULL UNIQUE,
+    CRMV VARCHAR(30) NOT NULL UNIQUE,
+    Especialidade VARCHAR(150),
+    Telefone VARCHAR(20),
+    email VARCHAR(120) NOT NULL,
+    Endereco VARCHAR(255),
+    Status VARCHAR(20) NOT NULL DEFAULT 'Ativo',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- 9. Tabela de Procedimentos Veterinários 
 CREATE TABLE IF NOT EXISTS procedimentos_veterinarios (
     ProcedimentoID INT AUTO_INCREMENT PRIMARY KEY,
     animal_id INT NOT NULL,
@@ -92,25 +108,28 @@ CREATE TABLE IF NOT EXISTS procedimentos_veterinarios (
     FOREIGN KEY (animal_id) REFERENCES animais(id)
 ) ENGINE=InnoDB;
 
--- 9. Tabela de Adoções
+-- 10. Tabela de Adoções
 CREATE TABLE IF NOT EXISTS adocoes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     animal_id INT NOT NULL,
     adotante_id INT NOT NULL,
     data_adocao DATE NOT NULL,
     observacoes TEXT,
+    status VARCHAR(50) NOT NULL DEFAULT 'Aguardando confirmação',
+    documento TEXT,
+    token_confirmacao VARCHAR(80),
+    data_assinatura DATETIME,
     FOREIGN KEY (animal_id) REFERENCES animais(id),
-    FOREIGN KEY (adotante_id) REFERENCES adotantes(id)
+    FOREIGN KEY (adotante_id) REFERENCES adotante(id)
 ) ENGINE=InnoDB;
 
 -- RF-F3 - Validação de Aptidão para Adoção
 
 ALTER TABLE animais 
-ADD COLUMN status_adocao VARCHAR(20) DEFAULT 'Em análise',
 ADD COLUMN justificativa TEXT,
 ADD COLUMN data_validacao DATETIME;
 
--- 10. Tabela de Saídas de Estoque (Sincronizada com a sua imagem)
+-- 11. Tabela de Saídas de Estoque (Sincronizada com a sua imagem)
 CREATE TABLE IF NOT EXISTS saídas_estoque (
     id INT AUTO_INCREMENT PRIMARY KEY,
     estoque_id INT NOT NULL,

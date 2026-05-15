@@ -119,7 +119,7 @@ const GerenciadorAdocoes = () => {
         <div className="container-fluid p-0 min-vh-100 bg-light">
 
             {/* HEADER */}
-            <header className="navbar custom-navbar p-3 mb-4" style={{ backgroundColor: '#FF69B4' }}>
+            <header data-tour="page-header" className="navbar custom-navbar p-3 mb-4" style={{ backgroundColor: '#FF69B4' }}>
                 <div className="container-fluid">
 
                     <Link to="/home" className="btn btn-dark">
@@ -130,7 +130,7 @@ const GerenciadorAdocoes = () => {
                         🤝 Registro de Adoções
                     </span>
 
-                    <Button onClick={() => setShowModal(true)}>
+                    <Button data-tour="abrir-formulario" onClick={() => setShowModal(true)}>
                         <PlusCircle size={18} /> Nova Adoção
                     </Button>
 
@@ -140,7 +140,7 @@ const GerenciadorAdocoes = () => {
             <Container>
 
                 {/* BUSCA */}
-                <InputGroup className="mb-4">
+                <InputGroup data-tour="busca" className="mb-4">
                     <Form.Control
                         placeholder="Buscar..."
                         value={termoBusca}
@@ -156,7 +156,7 @@ const GerenciadorAdocoes = () => {
                 )}
 
                 {/* LISTA */}
-                <Row>
+                <Row data-tour="listagem">
                     {adocoesFiltradas.map(adocao => (
 
                         <Col md={4} key={adocao.id}>
@@ -214,6 +214,7 @@ const GerenciadorAdocoes = () => {
 
                                 {/* EXCLUIR */}
                                 <Button
+  data-tour="acoes"
   variant="outline-danger"
   size="sm"
   className="mt-2 d-flex align-items-center justify-content-center"

@@ -10,8 +10,8 @@ import estoqueRoutes from './src/routes/estoqueRoutes.js';
 import historicoRoutes from './src/routes/historicoRoutes.js';
 import procedimentosVeterinariosRoutes from './src/routes/procedimentosVeterinariosRoutes.js';
 import validacaoRoutes from "./src/routes/validacaoRoutes.js";
-import adocaoRoutes from "./src/routes/adocaoRoutes.js";
-import veterinarioRoutes from './src/routes/veterinarioRoutes.js';
+import adocaoRoutes from "./src/routes/AdocaoRoutes.js";
+import veterinarioRoutes from './src/routes/VeterinarioRoutes.js';
 
 dotenv.config();
 

@@ -69,7 +69,7 @@ const GerenciarVacinas = () => {
 
     return (
         <Container className="mt-4 pb-5">
-            <header className="d-flex align-items-center mb-4 gap-3">
+            <header data-tour="page-header" className="d-flex align-items-center mb-4 gap-3">
                 <Link to="/home" className="btn btn-dark custom-btn-back" style={{ border: '1px solid #FF69B4' }}>
                     <ArrowLeft size={20} color="#FF69B4" />
                 </Link>
@@ -82,7 +82,7 @@ const GerenciarVacinas = () => {
                 </Alert>
             )}
 
-            <Card className="custom-card shadow-sm mb-5 border-0">
+            <Card data-tour="formulario" className="custom-card shadow-sm mb-5 border-0">
                 <Card.Header className="custom-navbar text-white">
                     <h5 className="m-0 custom-title text-white">
                         {formData.VacinaID ? '📝 Editar Vacina' : '➕ Nova Vacina'}
@@ -110,7 +110,7 @@ const GerenciarVacinas = () => {
                                 />
                             </Col>
                             <Col md={3} className="d-flex gap-2">
-                                <Button className="custom-btn w-100" type="submit">Salvar</Button>
+                                <Button data-tour="salvar" className="custom-btn w-100" type="submit">Salvar</Button>
                                 {formData.VacinaID && (
                                     <Button variant="secondary" onClick={() => setFormData({ VacinaID: null, CodigoVacina: '', NomeVacina: '' })}>Cancelar</Button>
                                 )}
@@ -121,7 +121,7 @@ const GerenciarVacinas = () => {
             </Card>
 
             {/* Barra de Busca */}
-            <InputGroup className="mb-4 shadow-sm">
+            <InputGroup data-tour="busca" className="mb-4 shadow-sm">
                 <InputGroup.Text className="bg-white border-end-0"><Search size={18} /></InputGroup.Text>
                 <Form.Control
                     className="border-start-0"
@@ -132,7 +132,7 @@ const GerenciarVacinas = () => {
             </InputGroup>
 
             {/* Tabela de Dados */}
-            <Card className="custom-card shadow-sm border-0">
+            <Card data-tour="listagem" className="custom-card shadow-sm border-0">
                 <Table responsive hover className="text-center align-middle mb-0 bg-white">
                     <thead className="bg-pink">
                         <tr className="text-white">
@@ -151,7 +151,7 @@ const GerenciarVacinas = () => {
                                     <td>#{v.VacinaID}</td>
                                     <td className="text-muted">{v.CodigoVacina}</td>
                                     <td className="fw-bold">{v.NomeVacina}</td>
-                                    <td>
+                                    <td data-tour="acoes">
                                         <Button variant="link" className="text-primary me-2" onClick={() => setFormData(v)}>
                                             <Edit size={18} />
                                         </Button>
