@@ -2,7 +2,8 @@ import express from 'express';
 import AnimalController from '../controllers/AnimalController.js';
 
 const router = express.Router();
-
+router.get('/animais/relatorio', AnimalController.relatorio);
+router.get('/animais/relatorio-saude', AnimalController.relatorioSaude);
 router.get('/animais', AnimalController.listar);
 router.get('/animais/:id', AnimalController.buscarPorId);
 router.post('/animais', AnimalController.criar);

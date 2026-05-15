@@ -6,12 +6,14 @@ import './EstilosAbrigo.css';
 
 import AnimalService from '../services/AnimalService.js';
 import ProcedimentoVeterinarioService from '../services/ProcedimentoVeterinarioService.js';
+import VeterinarioService from '../services/VeterinarioService.js';
 
 const GerenciarProcedimentosVeterinarios = () => {
   const [animais, setAnimais] = useState([]);
   const [procedimentos, setProcedimentos] = useState([]);
   const [mensagem, setMensagem] = useState({ tipo: '', texto: '' });
   const [isLoading, setIsLoading] = useState(false);
+  const [veterinarios, setVeterinarios] = useState([]);
 
   const [formData, setFormData] = useState({
     ProcedimentoID: null,
@@ -48,9 +50,20 @@ const GerenciarProcedimentosVeterinarios = () => {
     }
   };
 
+    const carregarVeterinarios = async () => {
+    try {
+      const dados = await VeterinarioService.listar();
+      const ativos = Array.isArray(dados) ? dados.filter(v => v.StatusVeterinario === 'Ativo') : [];
+      setVeterinarios(ativos);
+    } catch (error) {
+      console.error('Erro ao carregar veterinários:', error);
+    }
+  };
+
   useEffect(() => {
     carregarAnimais();
     carregarProcedimentos();
+    carregarVeterinarios();
   }, []);
 
   const limparFormulario = () => {
@@ -221,12 +234,18 @@ const GerenciarProcedimentosVeterinarios = () => {
               <Col md={4}>
                 <Form.Group>
                   <Form.Label>Veterinário *</Form.Label>
-                  <Form.Control
-                    type="text"
+                  <Form.Select
                     value={formData.veterinario}
                     onChange={(e) => setFormData({ ...formData, veterinario: e.target.value })}
                     required
-                  />
+                  >
+                    <option value="">Selecione um veterinário</option>
+                    {veterinarios.map((v) => (
+                      <option key={v.VeterinarioID} value={v.NomeCompletoVeterinario}>
+                        {v.NomeCompletoVeterinario} | {v.CRMVVeterinario}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </Form.Group>
               </Col>
 

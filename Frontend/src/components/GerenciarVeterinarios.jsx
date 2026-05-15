@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Row, Col, Table, Card, InputGroup, Alert } from 'react-bootstrap';
-import { Edit, Trash2, Search, User, ArrowLeft } from 'lucide-react';
+import { Edit, Trash2, Search, Stethoscope, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './EstilosAbrigo.css';
-import AdotanteService from '../services/AdotanteService';
+import VeterinarioService from '../services/VeterinarioService';
 
-function GerenciarAdotantes() {
+function GerenciarVeterinarios() {
 
-  const [adotantes, setAdotantes] = useState([]);
+  const [veterinarios, setVeterinarios] = useState([]);
   const [filtro, setFiltro] = useState('');
   const [mensagem, setMensagem] = useState({ tipo: '', texto: '' });
   const [editando, setEditando] = useState(false);
 
   const initialFormState = {
-    AdotanteID: null,
-    NomeCompletoAdotante: '',
-    CPFAdotante: '',
-    RGAdotante: '',
-    TelefoneAdotante: '',
-    RuaNumeroAdotante: '',
-    BairroAdotante: '',
-    CEPAdotante: '',
-    email: '' // 🔥 NOVO
+    VeterinarioID: null,
+    NomeCompletoVeterinario: '',
+    CPFVeterinario: '',
+    CRMVVeterinario: '',
+    EspecialidadeVeterinario: '',
+    TelefoneVeterinario: '',
+    email: '',
+    EnderecoVeterinario: '',
+    StatusVeterinario: 'Ativo'
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -29,27 +29,23 @@ function GerenciarAdotantes() {
   // máscaras
   const mascaraCPF = (v) => v.replace(/\D/g, '').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2').slice(0, 14);
   const mascaraTelefone = (v) => v.replace(/\D/g, '').replace(/^(\d{2})(\d{5})(\d{4})/, '($1) $2-$3').slice(0, 15);
-  const mascaraCEP = (v) => v.replace(/\D/g, '').replace(/(\d{5})(\d)/, '$1-$2').slice(0, 9);
-  const mascaraRG = (v) => v.replace(/[^0-9xX]/g, '').toUpperCase().slice(0, 12);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     let val = value;
 
-    if (name === 'CPFAdotante') val = mascaraCPF(value);
-    if (name === 'TelefoneAdotante') val = mascaraTelefone(value);
-    if (name === 'CEPAdotante') val = mascaraCEP(value);
-    if (name === 'RGAdotante') val = mascaraRG(value);
+    if (name === 'CPFVeterinario') val = mascaraCPF(value);
+    if (name === 'TelefoneVeterinario') val = mascaraTelefone(value);
 
     setFormData({ ...formData, [name]: val });
   };
 
   const carregarDados = async () => {
     try {
-      const dados = await AdotanteService.listar(filtro);
-      setAdotantes(Array.isArray(dados) ? dados : []);
+      const dados = await VeterinarioService.listar(filtro);
+      setVeterinarios(Array.isArray(dados) ? dados : []);
     } catch {
-      setMensagem({ tipo: 'danger', texto: 'Erro ao carregar adotantes.' });
+      setMensagem({ tipo: 'danger', texto: 'Erro ao carregar veterinários.' });
     }
   };
 
@@ -66,24 +62,25 @@ function GerenciarAdotantes() {
     }
 
     try {
-      await AdotanteService.salvar(formData);
+      await VeterinarioService.salvar(formData);
 
       setMensagem({
         tipo: 'bg-pink',
-        texto: editando ? 'Cadastro atualizado!' : 'Adotante cadastrado!'
+        texto: editando ? 'Cadastro atualizado!' : 'Veterinário cadastrado!'
       });
 
       setFormData(initialFormState);
       setEditando(false);
       carregarDados();
 
-    } catch {
-      setMensagem({ tipo: 'danger', texto: 'Erro ao salvar dados.' });
+    } catch (error) {
+      const msg = error?.response?.data?.error || 'Erro ao salvar dados.';
+      setMensagem({ tipo: 'danger', texto: msg });
     }
   };
 
-  const prepararEdicao = (adotante) => {
-    setFormData(adotante);
+  const prepararEdicao = (veterinario) => {
+    setFormData(veterinario);
     setEditando(true);
     window.scrollTo(0, 0);
   };
@@ -96,7 +93,7 @@ function GerenciarAdotantes() {
           <ArrowLeft size={20} color="#FF69B4" />
         </Link>
         <h2 className="custom-subtitle m-0 d-flex align-items-center gap-2">
-          <User size={30} /> Gerenciar Adotantes
+          <Stethoscope size={30} /> Gerenciar Veterinários
         </h2>
       </header>
 
@@ -114,7 +111,7 @@ function GerenciarAdotantes() {
       <Card className="custom-card shadow-sm mb-4 border-0">
         <Card.Header className="custom-navbar text-white">
           <h5 className="m-0 text-white">
-            {editando ? '📝 Editar Adotante' : '👤 Novo Cadastro'}
+            {editando ? '📝 Editar Veterinário' : '🩺 Novo Cadastro'}
           </h5>
         </Card.Header>
 
@@ -127,8 +124,8 @@ function GerenciarAdotantes() {
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold">Nome Completo *</Form.Label>
                   <Form.Control
-                    name="NomeCompletoAdotante"
-                    value={formData.NomeCompletoAdotante}
+                    name="NomeCompletoVeterinario"
+                    value={formData.NomeCompletoVeterinario}
                     onChange={handleInputChange}
                     required
                   />
@@ -139,8 +136,8 @@ function GerenciarAdotantes() {
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold">CPF *</Form.Label>
                   <Form.Control
-                    name="CPFAdotante"
-                    value={formData.CPFAdotante}
+                    name="CPFVeterinario"
+                    value={formData.CPFVeterinario}
                     onChange={handleInputChange}
                     placeholder="000.000.000-00"
                     required
@@ -150,17 +147,59 @@ function GerenciarAdotantes() {
 
               <Col md={3}>
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">RG</Form.Label>
+                  <Form.Label className="fw-bold">CRMV *</Form.Label>
                   <Form.Control
-                    name="RGAdotante"
-                    value={formData.RGAdotante}
+                    name="CRMVVeterinario"
+                    value={formData.CRMVVeterinario}
                     onChange={handleInputChange}
+                    placeholder="Ex: SP-12345"
+                    required
                   />
                 </Form.Group>
               </Col>
             </Row>
 
-            {/* 🔥 EMAIL */}
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="fw-bold">Especialidade</Form.Label>
+                  <Form.Control
+                    name="EspecialidadeVeterinario"
+                    value={formData.EspecialidadeVeterinario}
+                    onChange={handleInputChange}
+                    placeholder="Ex: Clínica Geral, Cirurgia..."
+                  />
+                </Form.Group>
+              </Col>
+
+              <Col md={3}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="fw-bold">Telefone *</Form.Label>
+                  <Form.Control
+                    name="TelefoneVeterinario"
+                    value={formData.TelefoneVeterinario}
+                    onChange={handleInputChange}
+                    placeholder="(00) 00000-0000"
+                    required
+                  />
+                </Form.Group>
+              </Col>
+
+              <Col md={3}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="fw-bold">Status</Form.Label>
+                  <Form.Select
+                    name="StatusVeterinario"
+                    value={formData.StatusVeterinario}
+                    onChange={handleInputChange}
+                  >
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+            </Row>
+
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
@@ -175,51 +214,15 @@ function GerenciarAdotantes() {
                   />
                 </Form.Group>
               </Col>
-            </Row>
 
-            <Row>
-              <Col md={3}>
+              <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Telefone *</Form.Label>
+                  <Form.Label className="fw-bold">Endereço</Form.Label>
                   <Form.Control
-                    name="TelefoneAdotante"
-                    value={formData.TelefoneAdotante}
+                    name="EnderecoVeterinario"
+                    value={formData.EnderecoVeterinario}
                     onChange={handleInputChange}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-
-              <Col md={3}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">CEP</Form.Label>
-                  <Form.Control
-                    name="CEPAdotante"
-                    value={formData.CEPAdotante}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-              </Col>
-
-              <Col md={3}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Bairro</Form.Label>
-                  <Form.Control
-                    name="BairroAdotante"
-                    value={formData.BairroAdotante}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-              </Col>
-
-              <Col md={3}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Rua e Nº *</Form.Label>
-                  <Form.Control
-                    name="RuaNumeroAdotante"
-                    value={formData.RuaNumeroAdotante}
-                    onChange={handleInputChange}
-                    required
+                    placeholder="Rua, número, bairro..."
                   />
                 </Form.Group>
               </Col>
@@ -227,7 +230,7 @@ function GerenciarAdotantes() {
 
             <div className="d-flex gap-2">
               <Button className="custom-btn flex-grow-1" type="submit">
-                {editando ? 'Atualizar Adotante' : 'Salvar Adotante'}
+                {editando ? 'Atualizar Veterinário' : 'Salvar Veterinário'}
               </Button>
 
               {editando && (
@@ -252,7 +255,7 @@ function GerenciarAdotantes() {
           <Search size={18} />
         </InputGroup.Text>
         <Form.Control
-          placeholder="Pesquisar por nome, CPF ou email..."
+          placeholder="Pesquisar por nome, CPF, CRMV ou email..."
           onChange={e => setFiltro(e.target.value)}
         />
       </InputGroup>
@@ -263,28 +266,33 @@ function GerenciarAdotantes() {
           <thead className="bg-pink text-white">
             <tr>
               <th>Nome</th>
-              <th>CPF</th>
-              <th>Email</th> {/* 🔥 NOVO */}
+              <th>CRMV</th>
+              <th>Especialidade</th>
               <th>Telefone</th>
-              <th>Bairro</th>
+              <th>Email</th>
+              <th>Status</th>
               <th>Ações</th>
             </tr>
           </thead>
 
           <tbody>
-            {adotantes.length > 0 ? adotantes.map(a => (
-              <tr key={a.AdotanteID}>
-                <td className="fw-bold">{a.NomeCompletoAdotante}</td>
-                <td>{a.CPFAdotante}</td>
-                <td>{a.email}</td> {/* 🔥 NOVO */}
-                <td>{a.TelefoneAdotante}</td>
-                <td>{a.BairroAdotante || 'Não informado'}</td>
-
+            {veterinarios.length > 0 ? veterinarios.map(v => (
+              <tr key={v.VeterinarioID}>
+                <td className="fw-bold">{v.NomeCompletoVeterinario}</td>
+                <td>{v.CRMVVeterinario}</td>
+                <td>{v.EspecialidadeVeterinario || 'Não informada'}</td>
+                <td>{v.TelefoneVeterinario}</td>
+                <td>{v.email}</td>
+                <td>
+                  <span className={`badge ${v.StatusVeterinario === 'Ativo' ? 'bg-success' : 'bg-secondary'}`}>
+                    {v.StatusVeterinario}
+                  </span>
+                </td>
                 <td>
                   <Button
                     variant="link"
                     className="text-primary me-2"
-                    onClick={() => prepararEdicao(a)}
+                    onClick={() => prepararEdicao(v)}
                   >
                     <Edit size={18} />
                   </Button>
@@ -293,8 +301,8 @@ function GerenciarAdotantes() {
                     variant="link"
                     className="text-danger"
                     onClick={() => {
-                      if (window.confirm('Excluir?'))
-                        AdotanteService.excluir(a.AdotanteID).then(carregarDados)
+                      if (window.confirm('Excluir este veterinário?'))
+                        VeterinarioService.excluir(v.VeterinarioID).then(carregarDados)
                     }}
                   >
                     <Trash2 size={18} />
@@ -303,8 +311,8 @@ function GerenciarAdotantes() {
               </tr>
             )) : (
               <tr>
-                <td colSpan="6" className="py-4 text-muted">
-                  Nenhum adotante encontrado.
+                <td colSpan="7" className="py-4 text-muted">
+                  Nenhum veterinário encontrado.
                 </td>
               </tr>
             )}
@@ -316,4 +324,4 @@ function GerenciarAdotantes() {
   );
 }
 
-export default GerenciarAdotantes;
+export default GerenciarVeterinarios;
