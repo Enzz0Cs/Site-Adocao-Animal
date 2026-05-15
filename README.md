@@ -1,70 +1,243 @@
-SGAA - Sistema de Gestão de Animais e Adoções
-📝 Resumo do Projeto
+# SGAA - Sistema de Gestão de Animais e Adoções
 
-O SGAA é uma aplicação web responsiva desenvolvida para a Associação Abrigo de Animais de Teodoro Sampaio. O projeto tem como objetivo principal digitalizar e organizar os registros da ONG, substituindo controles manuais por uma base de dados segura em MySQL. O sistema garante a rastreabilidade completa do animal, desde o resgate até a adoção responsável, integrando o controle de saúde e a gestão de insumos.
-Principais Diferenciais:
+## Resumo do projeto
 
-    Unificação de Módulos: Todas as funções básicas (Resgate, Adoção, Estoque e Saúde) foram integradas em um site único com navegação centralizada pela Home.
+O **SGAA** é uma aplicação web responsiva desenvolvida para a **Associação Abrigo de Animais de Teodoro Sampaio**. O sistema tem como objetivo digitalizar e organizar os registros da ONG, substituindo controles manuais por uma solução integrada com banco de dados MySQL.
 
-    Padronização Visual: Interface desenvolvida com JavaScript e CSS customizado, garantindo identidade visual e usabilidade em dispositivos desktop e móveis.
+A aplicação permite acompanhar a trajetória do animal dentro do abrigo, desde o cadastro e controle de saúde até o processo de adoção responsável. Também centraliza a gestão de adotantes, vacinas, veterinários, procedimentos veterinários, estoque e relatórios.
 
-    Controle de Acesso: Sistema de login com níveis de permissão diferenciados para Administradores, Técnicos e Funcionários.
+## Principais diferenciais
 
-📁 Estrutura Completa de Diretórios
+- **Unificação de módulos:** as funções principais do abrigo foram integradas em um único sistema, com navegação centralizada pela Home.
+- **Padronização visual:** interface construída com React, JavaScript, Bootstrap e CSS customizado, mantendo identidade visual consistente.
+- **Controle de acesso:** login com níveis de permissão para administradores, responsáveis técnicos e funcionários.
+- **Rastreabilidade:** histórico de informações importantes sobre animais, adoções, vacinas, procedimentos e movimentações de estoque.
+- **Tour guiado:** guia interativo com `driver.js` para apresentar as principais telas, formulários e botões de ação do sistema.
 
-O projeto utiliza uma arquitetura organizada para separar as responsabilidades de servidor (Backend) e interface (Frontend):
-1. Backend (/Backend)
+## Funcionalidades
 
-Responsável pela API, regras de negócio e persistência de dados.
+- Cadastro, edição, listagem e exclusão de animais.
+- Validação de aptidão do animal para adoção.
+- Registro de vacinas aplicadas e histórico de saúde.
+- Cadastro e gerenciamento de adotantes.
+- Registro e acompanhamento de adoções.
+- Cadastro de veterinários e controle de status profissional.
+- Registro de procedimentos veterinários.
+- Controle de estoque de alimentos, medicamentos, itens de higiene e outros insumos.
+- Histórico de saídas de estoque.
+- Relatórios de animais, saúde e adoções.
+- Guia interativo para auxiliar o uso das telas.
 
-    src/: Pasta raiz do código do servidor.
+## Tecnologias utilizadas
 
-        config/: Configurações globais, como o arquivo database.js para conexão com o MySQL.
+### Frontend
 
-        controllers/: Lógica de execução das funcionalidades:
+- React
+- JavaScript
+- CSS
+- Bootstrap
+- React Bootstrap
+- React Router DOM
+- Axios
+- Lucide React
+- React Icons
+- Driver.js
+- jsPDF e jsPDF AutoTable
 
-            AuthController.js: Gere o acesso e permissões de usuários.
+### Backend
 
-            AnimalController.js & AdotanteController.js: Gerenciam os cadastros principais.
+- Node.js
+- Express
+- MySQL2
+- CORS
+- Dotenv
+- Nodemailer
+- UUID
 
-            Vacinacontroller.js & HistoricoController.js: Controlam o prontuário de vacinas e histórico de saúde.
+### Banco de dados
 
-            EstoqueController.js: Gerencia o inventário de remédios e alimentos.
+- MySQL
 
-        models/: Definições das entidades do banco de dados (ex: AnimalModel.js, UsuarioModel.js, VacinaModel.js).
+## Estrutura de diretórios
 
-        routes/: Mapeamento dos endpoints da API (ex: animalRoutes.js, authRoutes.js, vacinasRoutes.js).
+```text
+.
+├── Backend/
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── database.js
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   └── services/
+│   ├── app.js
+│   ├── package.json
+│   └── .env
+│
+├── Frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── services/
+│   │   ├── App.js
+│   │   └── index.js
+│   └── package.json
+│
+├── database.sql
+├── nodemon.json
+├── .gitignore
+└── README.md
+```
 
-    app.js: Arquivo de inicialização do servidor Node.js.
+## Backend
 
-2. Frontend (/Frontend)
+O backend é responsável pela API, regras de negócio e comunicação com o banco de dados.
 
-Interface do usuário focada em padronização e consumo da API.
+Principais pastas:
 
-    src/: Código-fonte da aplicação visual.
+- `src/config/`: configuração de conexão com o MySQL.
+- `src/controllers/`: lógica das funcionalidades e tratamento das requisições.
+- `src/models/`: consultas e operações no banco de dados.
+- `src/routes/`: definição dos endpoints da API.
+- `src/services/`: serviços auxiliares, como envio de email.
 
-        components/: Páginas e elementos visuais unificados:
+Arquivo principal:
 
-            Home.jsx: Central de navegação do sistema.
+- `Backend/app.js`: inicializa o servidor Express e registra as rotas da API.
 
-            Login.jsx: Portal de acesso seguro.
+## Frontend
 
-            GerenciadorAbrigoAnimais.jsx: Gestão do plantel de animais.
+O frontend é responsável pela interface visual e consumo da API.
 
-            GerenciarVacinas.jsx: Módulo de histórico de vacinação (RF_F1).
+Principais pastas:
 
-            GerenciarEstoque.jsx: Controle de remédios (medicamentos) e alimentos (rações).
+- `src/components/`: telas e componentes visuais do sistema.
+- `src/services/`: camada de comunicação com o backend via Axios.
+- `src/App.js`: define as rotas da aplicação.
 
-            EstilosAbrigo.css: Padronização visual via CSS de todos os componentes.
+Principais telas:
 
-        services/: Camada de comunicação com o Backend (ex: ApiService.js, VacinaService.js, HistoricoService.js).
+- `Login.jsx`: tela de login, cadastro e recuperação de senha.
+- `Home.jsx`: central de navegação dos módulos.
+- `GerenciadorAbrigoAnimais.jsx`: gestão dos animais.
+- `GerenciadorAdocoes.jsx`: registro e acompanhamento de adoções.
+- `GerenciarAdotante.jsx`: cadastro e consulta de adotantes.
+- `GerenciarVacinas.jsx`: cadastro de vacinas.
+- `GerenciarVeterinarios.jsx`: cadastro de veterinários.
+- `GerenciarProcedimentosVeterinarios.jsx`: controle de procedimentos veterinários.
+- `GerenciarEstoque.jsx`: controle de estoque e saídas.
+- `Relatorios.jsx`: acesso aos relatórios do sistema.
+- `TourGuia.js`: guia interativo das telas.
 
-    App.js: Componente raiz que integra todas as rotas do sistema.
+## Configuração do banco de dados
 
-🛠️ Tecnologias
+1. Crie um banco MySQL.
+2. Execute o arquivo `database.sql`.
+3. Configure o arquivo `.env` dentro da pasta `Backend/`.
 
-    Frontend: JavaScript / CSS.
+Exemplo de `.env`:
 
-    Backend: Node.js.
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=sua_senha
+DB_NAME=abrigo_vacinas
+PORT=3001
+```
 
-    Banco de Dados: MySQL.
+## Como executar o projeto
+
+### 1. Instalar dependências do backend
+
+```bash
+cd Backend
+npm install
+```
+
+### 2. Iniciar o backend
+
+```bash
+npm start
+```
+
+O backend ficará disponível em:
+
+```text
+http://localhost:3001
+```
+
+### 3. Instalar dependências do frontend
+
+Abra outro terminal:
+
+```bash
+cd Frontend
+npm install
+```
+
+### 4. Iniciar o frontend
+
+```bash
+npm start
+```
+
+O frontend ficará disponível em:
+
+```text
+http://localhost:3000
+```
+
+## Rotas principais da API
+
+```text
+POST   /api/login
+POST   /api/registrar
+PUT    /api/resetar-senha
+
+GET    /api/animais
+POST   /api/animais
+PUT    /api/animais/:id
+DELETE /api/animais/:id
+
+GET    /api/adotantes
+POST   /api/adotantes
+PUT    /api/adotantes/:id
+DELETE /api/adotantes/:id
+
+GET    /api/adocoes
+POST   /api/adocoes
+POST   /api/adocoes/:id/finalizar
+DELETE /api/adocoes/:id
+
+GET    /api/vacinas
+POST   /api/vacinas
+PUT    /api/vacinas/:id
+DELETE /api/vacinas/:id
+
+GET    /api/veterinarios
+POST   /api/veterinarios
+PUT    /api/veterinarios/:id
+DELETE /api/veterinarios/:id
+
+GET    /api/procedimentos-veterinarios
+POST   /api/procedimentos-veterinarios
+PUT    /api/procedimentos-veterinarios/:id
+DELETE /api/procedimentos-veterinarios/:id
+
+GET    /api/estoque
+POST   /api/estoque
+PUT    /api/estoque/:id
+DELETE /api/estoque/:id
+```
+
+## Observações
+
+- O backend utiliza a porta `3001`.
+- O frontend utiliza a porta `3000`.
+- A pasta `Frontend/build/` é gerada automaticamente pelo React ao executar o build e não precisa ser versionada.
+- O arquivo `.env` não deve ser enviado ao GitHub, pois contém dados de conexão com o banco.
+
+## Status do projeto
+
+Projeto acadêmico em desenvolvimento para apoio à gestão da Associação Abrigo de Animais de Teodoro Sampaio.
