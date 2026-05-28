@@ -49,7 +49,7 @@ Eu, ${nomeAdotante}, declaro que estou ciente da responsabilidade pela adoção 
         [animal_id]
       );
 
-      const link = `http://localhost:3001/api/adocoes/confirmar/${token}`;
+      const link = `http://localhost:3000/confirmacao/${token}`;
 
       try {
         await enviarEmailConfirmacao(email, nomeAdotante, link);
@@ -89,11 +89,12 @@ Eu, ${nomeAdotante}, declaro que estou ciente da responsabilidade pela adoção 
   }
 
   static async confirmarPorToken(token) {
-    await pool.query(`
+    const [result] = await pool.query(`
       UPDATE adocoes 
       SET status = 'Confirmado'
       WHERE token_confirmacao = ?
     `, [token]);
+    return result;
   }
 
   static async finalizar(id) {

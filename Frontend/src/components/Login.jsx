@@ -9,7 +9,6 @@ function Login() {
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
   const [nivelAcesso, setNivelAcesso] = useState("funcionario");
-  const [novaSenha, setNovaSenha] = useState("");
   const [modo, setModo] = useState("login");
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
@@ -54,10 +53,9 @@ function Login() {
     setErro("");
     try {
       await axios.put("http://localhost:3001/api/resetar-senha", {
-        email,
-        novaSenha
+        email
       });
-      setSucesso("Senha atualizada! Use a nova senha para entrar.");
+      setSucesso("Enviamos uma senha temporaria para seu e-mail.");
       setModo("login");
     } catch (err) {
       setErro(err.response?.data?.error || "Erro ao atualizar senha");
@@ -73,7 +71,7 @@ function Login() {
           <p className="text-muted">
             {modo === "login" && "Bem-vindo de volta!"}
             {modo === "registrar" && "Crie sua conta de acesso"}
-            {modo === "recuperar" && "Defina uma nova senha"}
+            {modo === "recuperar" && "Receba uma senha temporaria"}
           </p>
         </div>
 
@@ -132,11 +130,7 @@ function Login() {
               <label className="form-label small fw-bold">Email cadastrado</label>
               <input type="email" className="form-control" placeholder="Digite seu email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
-            <div className="mb-3">
-              <label className="form-label small fw-bold">Nova Senha</label>
-              <input type="password" className="form-control" placeholder="Digite a nova senha" value={novaSenha} onChange={(e) => setNovaSenha(e.target.value)} required />
-            </div>
-            <button className="btn btn-warning w-100 text-white fw-bold py-2">Atualizar Senha</button>
+            <button className="btn btn-warning w-100 text-white fw-bold py-2">Enviar senha temporaria</button>
             <button type="button" className="btn btn-link w-100 mt-2 text-decoration-none text-muted" onClick={() => alternarModo("login")}>Cancelar</button>
           </form>
         )}

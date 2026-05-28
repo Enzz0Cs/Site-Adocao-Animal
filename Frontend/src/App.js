@@ -18,6 +18,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import GerenciarProcedimentosVeterinarios from './components/GerenciarProcedimentosVeterinarios';
 import GerenciarVeterinarios from './components/GerenciarVeterinarios';
 import TourGuia from './components/TourGuia';
+import ConfirmacaoAdocao from './components/ConfirmacaoAdocao';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       <TourGuia />
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/confirmacao/:token" element={<ConfirmacaoAdocao />} />
 
         <Route
           path="/home"

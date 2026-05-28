@@ -17,8 +17,16 @@ class AdocaoController {
   }
 
   static async confirmar(req, res) {
-    await AdocaoModel.confirmarPorToken(req.params.token);
-    res.send("Adoção confirmada com sucesso!");
+    try {
+      const resultado = await AdocaoModel.confirmarPorToken(req.params.token);
+      if (resultado.affectedRows > 0) {
+        res.json({ message: "Adoção confirmada com sucesso!" });
+      } else {
+        res.status(404).json({ error: "Link inválido ou já utilizado" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Erro ao confirmar adoção" });
+    }
   }
 
   static async finalizar(req, res) {
