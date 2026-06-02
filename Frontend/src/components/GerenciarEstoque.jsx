@@ -15,7 +15,7 @@ const GerenciarEstoque = () => {
     const [dadosSaida, setDadosSaida] = useState({ quantidade: 1, destino: '' });
 
     const [formData, setFormData] = useState({
-        id: null, nome_item: '', categoria: '', quantidade_atual: '',
+        id: null, nome_item: '', codigo: '', categoria: '', quantidade_atual: '',
         unidade_medida: '', quantidade_minima: '', data_validade: ''
     });
 
@@ -75,7 +75,7 @@ const GerenciarEstoque = () => {
             await EstoqueService.salvar(formData);
             setMensagem({ tipo: 'bg-pink', texto: 'Salvo com sucesso!' });
             setFormData({
-                id: null, nome_item: '', categoria: '', quantidade_atual: '',
+                id: null, nome_item: '', codigo: '', categoria: '', quantidade_atual: '',
                 unidade_medida: '', quantidade_minima: '', data_validade: ''
             });
             carregar();
@@ -102,13 +102,18 @@ const GerenciarEstoque = () => {
     };
 
     return (
-        <Container className="mt-4 pb-5">
-            <header data-tour="page-header" className="d-flex align-items-center mb-4 gap-3">
-                <Link to="/home" className="btn btn-dark custom-btn-back">
-                    <ArrowLeft size={20} />
-                </Link>
-                <h2 className="custom-subtitle">📦 Controle de Estoque</h2>
+        <div className="container-fluid p-0 min-vh-100 bg-light">
+            <header data-tour="page-header" className="navbar custom-navbar p-3 mb-4" style={{ backgroundColor: '#FF69B4' }}>
+                <div className="container-fluid">
+                    <Link to="/home" className="btn btn-dark">
+                        <ArrowLeft size={20} />
+                    </Link>
+                    <span className="text-white fw-bold">Controle de Estoque</span>
+                    <div style={{ width: 40 }}></div>
+                </div>
             </header>
+
+            <Container>
 
             {mensagem.texto && (
                 <Alert variant="light" className={mensagem.tipo} onClose={() => setMensagem({})} dismissible>
@@ -139,8 +144,18 @@ const GerenciarEstoque = () => {
                                     <option>Alimentação</option>
                                     <option>Medicamento</option>
                                     <option>Higiene</option>
+                                    <option>Vacina</option>
                                     <option>Outros</option>
                                 </Form.Select>
+                            </Col>
+                            <Col md={2} style={{ display: formData.categoria === 'Vacina' ? 'block' : 'none' }}>
+                                <Form.Label>Código</Form.Label>
+                                <Form.Control
+                                    value={formData.codigo || ''}
+                                    onChange={e => setFormData({ ...formData, codigo: e.target.value })}
+                                    placeholder="Ex: V01"
+                                    required={formData.categoria === 'Vacina'}
+                                />
                             </Col>
                             <Col md={2}>
                                 <Form.Label>Qtd</Form.Label>
@@ -304,6 +319,7 @@ const GerenciarEstoque = () => {
                 </Modal.Footer>
             </Modal>
         </Container>
+        </div>
     );
 };
 

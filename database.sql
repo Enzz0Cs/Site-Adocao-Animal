@@ -5,10 +5,11 @@ USE abrigo_vacinas;
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    email VARCHAR(120) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
-    nivel_acesso VARCHAR(50) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    nivel_acesso ENUM('admin','funcionario','responsavel_tecnico') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    reset_token VARCHAR(255)
 ) ENGINE=InnoDB;
 
 -- 2. Tabela de Adotantes
@@ -33,15 +34,17 @@ CREATE TABLE IF NOT EXISTS animais (
     raca VARCHAR(100),
     porte ENUM('Pequeno', 'Médio', 'Grande') NOT NULL,
     idade INT NOT NULL,
-    status_adocao VARCHAR(20) NOT NULL DEFAULT 'Em análise'
+    status_adocao VARCHAR(20) DEFAULT 'Em análise',
+    justificativa TEXT,
+    data_validacao DATETIME
 ) ENGINE=InnoDB;
 
 -- 4. Tabela de Vacinas
 CREATE TABLE IF NOT EXISTS vacinas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(50) NOT NULL UNIQUE,
-    nome VARCHAR(100) NOT NULL,
-    cadastrado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
+    vacina VARCHAR(100) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
@@ -60,11 +63,13 @@ CREATE TABLE IF NOT EXISTS animal_vacina (
 CREATE TABLE IF NOT EXISTS estoque (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome_item VARCHAR(100) NOT NULL,
-    categoria ENUM('Alimentação', 'Medicamento', 'Higiene', 'Outros') NOT NULL,
+    codigo VARCHAR(50),
+    categoria ENUM('Alimentação', 'Medicamento', 'Higiene', 'Outros', 'Vacina') NOT NULL,
     quantidade_atual DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
     unidade_medida VARCHAR(20) NOT NULL,
     quantidade_minima DECIMAL(10, 2) DEFAULT 0.00,
     data_validade DATE,
+    peso_volume DECIMAL(10, 2),
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
@@ -94,7 +99,7 @@ CREATE TABLE IF NOT EXISTS veterinario (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- 9. Tabela de Procedimentos Veterinários 
+-- 9. Tabela de Procedimentos Veterinários
 CREATE TABLE IF NOT EXISTS procedimentos_veterinarios (
     ProcedimentoID INT AUTO_INCREMENT PRIMARY KEY,
     animal_id INT NOT NULL,
@@ -123,20 +128,14 @@ CREATE TABLE IF NOT EXISTS adocoes (
     FOREIGN KEY (adotante_id) REFERENCES adotante(id)
 ) ENGINE=InnoDB;
 
--- RF-F3 - Validação de Aptidão para Adoção
-
-ALTER TABLE animais 
-ADD COLUMN justificativa TEXT,
-ADD COLUMN data_validacao DATETIME;
-
--- 11. Tabela de Saídas de Estoque (Sincronizada com a sua imagem)
-CREATE TABLE IF NOT EXISTS saídas_estoque (
+-- 11. Tabela de Saídas de Estoque
+CREATE TABLE IF NOT EXISTS saidas_estoque (
     id INT AUTO_INCREMENT PRIMARY KEY,
     estoque_id INT NOT NULL,
-    quantidade_saída DECIMAL(10, 2) NOT NULL,
-    destino TEXT,
-    data_saida TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    responsável_id INT NOT NULL,
-    CONSTRAINT fk_estoque FOREIGN KEY (estoque_id) REFERENCES estoque(id) ON DELETE CASCADE,
-    CONSTRAINT fk_responsavel FOREIGN KEY (responsável_id) REFERENCES usuarios(id)
+    quantidade_saida INT NOT NULL,
+    destino VARCHAR(255) NOT NULL,
+    data_saida DATETIME DEFAULT CURRENT_TIMESTAMP,
+    responsavel_id INT NOT NULL,
+    FOREIGN KEY (estoque_id) REFERENCES estoque(id) ON DELETE CASCADE,
+    FOREIGN KEY (responsavel_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB;

@@ -52,23 +52,46 @@ class AuthController {
                 return res.status(404).json({ error: "Usuario nao encontrado" });
             }
 
-            const senhaTemporaria = randomBytes(4).toString("hex");
-            const sucesso = await UsuarioModel.atualizarSenha(email, senhaTemporaria);
-            if (!sucesso) {
-                return res.status(404).json({ error: "Usuario nao encontrado" });
-            }
+            const token = randomBytes(20).toString("hex");
+            await UsuarioModel.salvarResetToken(email, token);
+
+            const link = `http://localhost:3000/redefinir-senha/${token}`;
 
             try {
-                await enviarEmailRedefinicaoSenha(email, usuario.nome, senhaTemporaria);
+                await enviarEmailRedefinicaoSenha(email, usuario.nome, link);
             } catch (emailError) {
-                await UsuarioModel.atualizarSenha(email, usuario.senha);
+                await UsuarioModel.salvarResetToken(email, null);
                 console.error("Erro ao enviar e-mail de redefinicao:", emailError.message);
                 return res.status(500).json({ error: "Erro ao enviar e-mail de redefinicao" });
             }
 
-            res.json({ message: "Enviamos uma senha temporaria para seu e-mail." });
+            res.json({ message: "Enviamos um link de redefinicao para seu e-mail." });
         } catch (error) {
-            res.status(500).json({ error: "Erro ao atualizar senha" });
+            res.status(500).json({ error: "Erro ao solicitar redefinicao de senha" });
+        }
+    }
+
+    static async redefinirSenha(req, res) {
+        const { token, senha } = req.body;
+
+        try {
+            if (!token || !senha) {
+                return res.status(400).json({ error: "Token e nova senha sao obrigatorios" });
+            }
+
+            const usuario = await UsuarioModel.buscarPorResetToken(token);
+            if (!usuario) {
+                return res.status(400).json({ error: "Link invalido ou ja utilizado" });
+            }
+
+            const sucesso = await UsuarioModel.atualizarSenhaPorToken(token, senha);
+            if (!sucesso) {
+                return res.status(400).json({ error: "Erro ao redefinir senha" });
+            }
+
+            res.json({ message: "Senha redefinida com sucesso!" });
+        } catch (error) {
+            res.status(500).json({ error: "Erro ao redefinir senha" });
         }
     }
 }

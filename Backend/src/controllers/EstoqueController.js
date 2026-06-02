@@ -50,8 +50,7 @@ class EstoqueController {
     static async salvar(req, res) {
         try {
             const id = req.params.id || req.body.id;
-            const { nome_item, categoria, quantidade_atual, unidade_medida, quantidade_minima, data_validade, peso_volume } = req.body;
-
+            const { nome_item, codigo, categoria, quantidade_atual, unidade_medida, quantidade_minima, data_validade, peso_volume } = req.body;
 
             let dataFormatada = data_validade;
             if (data_validade && data_validade.includes('T')) {
@@ -60,6 +59,7 @@ class EstoqueController {
 
             const dados = {
                 nome_item,
+                codigo,
                 categoria,
                 quantidade_atual: Number(quantidade_atual),
                 unidade_medida,
@@ -71,9 +71,15 @@ class EstoqueController {
             if (id) {
                 const idLimpo = id.toString().replace(/\D/g, '');
                 await EstoqueModel.atualizar(idLimpo, dados);
+                if (categoria === 'Vacina') {
+                    await pool.query("UPDATE vacinas SET codigo = ?, vacina = ? WHERE codigo = ?", [codigo, nome_item, codigo]);
+                }
                 res.json({ message: 'Atualizado com sucesso!' });
             } else {
-                await EstoqueModel.criar(dados);
+                const result = await EstoqueModel.criar(dados);
+                if (categoria === 'Vacina') {
+                    await pool.query("INSERT INTO vacinas (codigo, vacina) VALUES (?, ?) ON DUPLICATE KEY UPDATE vacina = ?", [codigo, nome_item, nome_item]);
+                }
                 res.status(201).json({ message: 'Cadastrado com sucesso!' });
             }
         } catch (error) {
@@ -110,8 +116,14 @@ class EstoqueController {
 
             if (!idLimpo) return res.status(400).json({ error: 'ID inválido' });
 
+            const item = await EstoqueModel.buscarPorId(idLimpo);
+            if (!item) return res.status(404).json({ error: 'Item não encontrado' });
+
             const sucesso = await EstoqueModel.excluir(idLimpo);
             if (sucesso) {
+                if (item.categoria === 'Vacina' && item.codigo) {
+                    await pool.query("DELETE FROM vacinas WHERE codigo = ?", [item.codigo]);
+                }
                 res.json({ message: 'Item removido!' });
             } else {
                 res.status(404).json({ error: 'Item não encontrado' });

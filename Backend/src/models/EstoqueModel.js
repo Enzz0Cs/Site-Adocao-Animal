@@ -2,15 +2,16 @@ import pool from "../config/database.js";
 
 class EstoqueModel {
     static async criar(item) {
-        const { nome_item, categoria, quantidade_atual, unidade_medida, quantidade_minima, data_validade, peso_volume } = item;
+        const { nome_item, codigo, categoria, quantidade_atual, unidade_medida, quantidade_minima, data_validade, peso_volume } = item;
 
         const sql = `
-            INSERT INTO estoque (nome_item, categoria, quantidade_atual, unidade_medida, quantidade_minima, data_validade, peso_volume)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO estoque (nome_item, codigo, categoria, quantidade_atual, unidade_medida, quantidade_minima, data_validade, peso_volume)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         const values = [
             nome_item,
+            codigo || null,
             categoria,
             quantidade_atual,
             unidade_medida,
@@ -44,17 +45,18 @@ class EstoqueModel {
 
 
     static async atualizar(id, item) {
-        const { nome_item, categoria, quantidade_atual, unidade_medida, quantidade_minima, data_validade, peso_volume } = item;
+        const { nome_item, codigo, categoria, quantidade_atual, unidade_medida, quantidade_minima, data_validade, peso_volume } = item;
 
         const sql = `
             UPDATE estoque SET
-                nome_item = ?, categoria = ?, quantidade_atual = ?, unidade_medida = ?, 
+                nome_item = ?, codigo = ?, categoria = ?, quantidade_atual = ?, unidade_medida = ?, 
                 quantidade_minima = ?, data_validade = ?, peso_volume = ?
             WHERE id = ?
         `;
 
         const values = [
             nome_item,
+            codigo || null,
             categoria,
             quantidade_atual,
             unidade_medida,

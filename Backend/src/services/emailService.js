@@ -75,16 +75,17 @@ export const enviarEmailConfirmacao = async (email, nome, link) => {
   });
 };
 
-export const enviarEmailRedefinicaoSenha = async (email, nome, senhaTemporaria) => {
+export const enviarEmailRedefinicaoSenha = async (email, nome, link) => {
   await enviarEmail({
     from: remetente(),
     to: email,
     subject: "Redefinicao de senha - Abrigo Teodoro",
     html: `
       <p>Ola, ${nome}.</p>
-      <p>Sua senha foi redefinida. Use a senha temporaria abaixo para acessar o sistema:</p>
-      <p><strong>${senhaTemporaria}</strong></p>
-      <p>Apos entrar, altere sua senha para uma nova de sua preferencia.</p>
+      <p>Recebemos uma solicitacao de redefinicao de senha para sua conta.</p>
+      <p>Clique no link abaixo para criar uma nova senha:</p>
+      <p><a href="${link}">${link}</a></p>
+      <p>Se voce nao solicitou esta alteracao, ignore este e-mail.</p>
     `
   });
 };

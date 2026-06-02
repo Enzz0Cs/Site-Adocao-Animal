@@ -89,12 +89,43 @@ Eu, ${nomeAdotante}, declaro que estou ciente da responsabilidade pela adoção 
   }
 
   static async confirmarPorToken(token) {
-    const [result] = await pool.query(`
-      UPDATE adocoes 
-      SET status = 'Confirmado'
-      WHERE token_confirmacao = ?
-    `, [token]);
-    return result;
+    const connection = await pool.getConnection();
+
+    try {
+      await connection.beginTransaction();
+
+      const [rows] = await connection.query(
+        "SELECT animal_id FROM adocoes WHERE token_confirmacao = ?",
+        [token]
+      );
+
+      if (rows.length === 0) {
+        await connection.rollback();
+        connection.release();
+        return { affectedRows: 0 };
+      }
+
+      const animalId = rows[0].animal_id;
+
+      await connection.query(
+        "UPDATE adocoes SET status = 'Finalizada', data_assinatura = NOW() WHERE token_confirmacao = ?",
+        [token]
+      );
+
+      await connection.query(
+        "UPDATE animais SET status_adocao = 'Adotado' WHERE id = ?",
+        [animalId]
+      );
+
+      await connection.commit();
+      return { affectedRows: 1 };
+
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      connection.release();
+    }
   }
 
   static async finalizar(id) {

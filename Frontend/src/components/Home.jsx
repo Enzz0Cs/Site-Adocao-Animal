@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaPaw, FaSyringe, FaUserFriends, FaChartBar, FaBoxes, FaUserCircle, FaHeart, FaStethoscope } from 'react-icons/fa'; // Adicionado FaHeart
+import { FaPaw, FaUserFriends, FaChartBar, FaBoxes, FaUserCircle, FaHeart, FaStethoscope } from 'react-icons/fa';
 import './EstilosAbrigo.css';
 
 const Home = () => {
@@ -40,7 +40,7 @@ const Home = () => {
 
             <main className="container pb-5">
                 <div data-tour="modulos" className="row justify-content-center g-4 text-center">
-                    {(usuario.nivel === "admin" || usuario.nivel === "funcionario") && (
+                    {(usuario.nivel === "admin" || usuario.nivel === "funcionario" || usuario.nivel === "responsavel_tecnico") && (
                         <div data-tour="relatorios" className="col-md-3">
                             <div className="card h-100 shadow p-4 border-0">
                                 <FaPaw size={50} color="#FF69B4" className="mx-auto mb-3" />
@@ -70,16 +70,6 @@ const Home = () => {
                         </div>
                     )}
 
-                    {(usuario.nivel === "admin" || usuario.nivel === "responsavel_tecnico") && (
-                        <div className="col-md-3">
-                            <div className="card h-100 shadow p-4 border-0">
-                                <FaSyringe size={50} color="#FF69B4" className="mx-auto mb-3" />
-                                <h3>Vacinas</h3>
-                                <Link to="/vacinas" className="btn btn-primary mt-3">Ver Estoque</Link>
-                            </div>
-                        </div>
-                    )}
-
                     {(usuario.nivel === "admin" || usuario.nivel === "funcionario") && (
                         <div className="col-md-3">
                             <div className="card h-100 shadow p-4 border-0">
@@ -90,7 +80,7 @@ const Home = () => {
                         </div>
                     )}
 
-                    {(usuario.nivel === "admin" || usuario.nivel === "funcionario") && (
+                    {(usuario.nivel === "admin" || usuario.nivel === "funcionario" || usuario.nivel === "responsavel_tecnico") && (
                         <div className="col-md-3">
                             <div className="card h-100 shadow p-4 border-0">
                                 <FaBoxes size={50} color="#FF69B4" className="mx-auto mb-3" />

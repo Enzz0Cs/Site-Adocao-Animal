@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Card, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
-import { CheckCircle, XCircle } from 'lucide-react';
 
 const ConfirmacaoAdocao = () => {
   const { token } = useParams();
@@ -24,39 +23,43 @@ const ConfirmacaoAdocao = () => {
   }, [token]);
 
   return (
-    <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light">
-      <Container className="d-flex justify-content-center">
-        <Card className="p-5 text-center shadow" style={{ maxWidth: 500 }}>
-          {status === 'carregando' && (
-            <>
-              <Spinner animation="border" variant="primary" className="mb-3" />
-              <h4>Confirmando sua adoção...</h4>
-            </>
-          )}
+    <div className="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light">
+      <div className="card shadow-lg p-4" style={{ width: "450px", borderRadius: "15px" }}>
+        <div className="text-center mb-4">
+          <h2 className="fw-bold">🐾 Abrigo Teodoro</h2>
+          {status === 'carregando' && <p className="text-muted">Confirmando adoção...</p>}
+          {status === 'sucesso' && <p className="text-success fw-bold">Adoção confirmada!</p>}
+          {status === 'erro' && <p className="text-danger fw-bold">Link inválido</p>}
+        </div>
 
-          {status === 'sucesso' && (
-            <>
-              <CheckCircle size={64} className="text-success mb-3 mx-auto" />
-              <h3 className="text-success">Adoção Confirmada!</h3>
+        {status === 'carregando' && (
+          <div className="text-center py-4">
+            <Spinner animation="border" variant="primary" />
+          </div>
+        )}
+
+        {status === 'sucesso' && (
+          <>
+            <div className="text-center mb-3">
               <p className="text-muted">
-                Sua adoção foi confirmada com sucesso. O abrigo entrará em contato em breve para finalizar o processo.
+                Sua adoção foi confirmada com sucesso! O animal será atualizado como adotado no sistema.
               </p>
-              <Link to="/" className="btn btn-primary mt-3">Voltar ao início</Link>
-            </>
-          )}
+            </div>
+            <Link to="/" className="btn btn-primary w-100 fw-bold py-2">Voltar ao início</Link>
+          </>
+        )}
 
-          {status === 'erro' && (
-            <>
-              <XCircle size={64} className="text-danger mb-3 mx-auto" />
-              <h3 className="text-danger">Link inválido ou expirado</h3>
+        {status === 'erro' && (
+          <>
+            <div className="text-center mb-3">
               <p className="text-muted">
                 Este link de confirmação não é válido ou já foi utilizado.
               </p>
-              <Link to="/" className="btn btn-primary mt-3">Voltar ao início</Link>
-            </>
-          )}
-        </Card>
-      </Container>
+            </div>
+            <Link to="/" className="btn btn-primary w-100 fw-bold py-2">Voltar ao início</Link>
+          </>
+        )}
+      </div>
     </div>
   );
 };

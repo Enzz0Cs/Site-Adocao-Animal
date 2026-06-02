@@ -55,7 +55,7 @@ function Login() {
       await axios.put("http://localhost:3001/api/resetar-senha", {
         email
       });
-      setSucesso("Enviamos uma senha temporaria para seu e-mail.");
+      setSucesso("Enviamos um link de redefinicao para seu e-mail.");
       setModo("login");
     } catch (err) {
       setErro(err.response?.data?.error || "Erro ao atualizar senha");
@@ -71,7 +71,7 @@ function Login() {
           <p className="text-muted">
             {modo === "login" && "Bem-vindo de volta!"}
             {modo === "registrar" && "Crie sua conta de acesso"}
-            {modo === "recuperar" && "Receba uma senha temporaria"}
+            {modo === "recuperar" && "Receba um link de redefinicao"}
           </p>
         </div>
 
@@ -116,7 +116,6 @@ function Login() {
               <select className="form-select" value={nivelAcesso} onChange={(e) => setNivelAcesso(e.target.value)}>
                 <option value="funcionario">Funcionário</option>
                 <option value="admin">Administrador</option>
-                <option value="responsavel_tecnico">Veterinário (RT)</option>
               </select>
             </div>
             <button className="btn btn-success w-100 fw-bold py-2">Finalizar Cadastro</button>
@@ -130,7 +129,7 @@ function Login() {
               <label className="form-label small fw-bold">Email cadastrado</label>
               <input type="email" className="form-control" placeholder="Digite seu email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
-            <button className="btn btn-warning w-100 text-white fw-bold py-2">Enviar senha temporaria</button>
+            <button className="btn btn-warning w-100 text-white fw-bold py-2">Enviar link de redefinicao</button>
             <button type="button" className="btn btn-link w-100 mt-2 text-decoration-none text-muted" onClick={() => alternarModo("login")}>Cancelar</button>
           </form>
         )}

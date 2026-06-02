@@ -1,4 +1,5 @@
 import VeterinarioModel from "../models/VeterinarioModel.js";
+import pool from "../config/database.js";
 
 class VeterinarioController {
 
@@ -43,6 +44,17 @@ class VeterinarioController {
       }
 
       const novoVeterinario = await VeterinarioModel.criar(dados);
+
+      if (dados.email) {
+        const [existe] = await pool.query("SELECT id FROM usuarios WHERE email = ?", [dados.email]);
+        if (existe.length === 0) {
+          await pool.query(
+            "INSERT INTO usuarios (nome, email, senha, nivel_acesso) VALUES (?, ?, ?, ?)",
+            [dados.NomeCompletoVeterinario, dados.email, "123456", "responsavel_tecnico"]
+          );
+        }
+      }
+
       res.status(201).json(novoVeterinario);
     } catch (error) {
       console.error("Erro ao criar:", error);

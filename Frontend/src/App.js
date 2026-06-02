@@ -8,7 +8,7 @@ import RelatorioAdocoes from "./components/RelatorioAdocoes";
 import RelatorioAnimais from "./components/RelatorioAnimais";
 import RelatorioSaude from "./components/RelatorioSaude";
 import GerenciadorAbrigoAnimais from './components/GerenciadorAbrigoAnimais';
-import GerenciarVacinas from './components/GerenciarVacinas';
+
 import GerenciarAdotante from './components/GerenciarAdotante';
 import GerenciarEstoque from './components/GerenciarEstoque';
 import GerenciadorAdocoes from './components/GerenciadorAdocoes';
@@ -19,6 +19,7 @@ import GerenciarProcedimentosVeterinarios from './components/GerenciarProcedimen
 import GerenciarVeterinarios from './components/GerenciarVeterinarios';
 import TourGuia from './components/TourGuia';
 import ConfirmacaoAdocao from './components/ConfirmacaoAdocao';
+import RedefinirSenha from './components/RedefinirSenha';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/confirmacao/:token" element={<ConfirmacaoAdocao />} />
+        <Route path="/redefinir-senha/:token" element={<RedefinirSenha />} />
 
         <Route
           path="/home"
@@ -41,7 +43,7 @@ function App() {
           path="/animais"
           element={
             <PrivateRoute>
-              <ProtectedRoute niveisPermitidos={["admin", "funcionario"]}>
+              <ProtectedRoute niveisPermitidos={["admin", "funcionario", "responsavel_tecnico"]}>
                 <GerenciadorAbrigoAnimais />
               </ProtectedRoute>
             </PrivateRoute>
@@ -54,17 +56,6 @@ function App() {
             <PrivateRoute>
               <ProtectedRoute niveisPermitidos={["admin", "funcionario"]}>
                 <GerenciadorAdocoes />
-              </ProtectedRoute>
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="/vacinas"
-          element={
-            <PrivateRoute>
-              <ProtectedRoute niveisPermitidos={["admin", "responsavel_tecnico"]}>
-                <GerenciarVacinas />
               </ProtectedRoute>
             </PrivateRoute>
           }
@@ -85,7 +76,7 @@ function App() {
           path="/estoque"
           element={
             <PrivateRoute>
-              <ProtectedRoute niveisPermitidos={["admin", "funcionario"]}>
+              <ProtectedRoute niveisPermitidos={["admin", "funcionario", "responsavel_tecnico"]}>
                 <GerenciarEstoque />
               </ProtectedRoute>
             </PrivateRoute>

@@ -159,14 +159,20 @@ const GerenciarProcedimentosVeterinarios = () => {
   };
 
   return (
-    <Container className="py-4">
-      <div data-tour="page-header" className="d-flex justify-content-between align-items-center mb-3">
-        <h2>Controle de Procedimentos Veterinários</h2>
-        <Link to="/home" className="btn btn-outline-secondary">
-          <ArrowLeft size={18} className="me-2" />
-          Voltar
-        </Link>
-      </div>
+    <div className="container-fluid p-0 min-vh-100 bg-light">
+      <header data-tour="page-header" className="navbar custom-navbar p-3 mb-4" style={{ backgroundColor: '#FF69B4' }}>
+        <div className="container-fluid">
+          <Link to="/home" className="btn btn-dark">
+            <ArrowLeft size={20} />
+          </Link>
+          <span className="text-white fw-bold">
+            Controle de Procedimentos Veterinários
+          </span>
+          <div style={{ width: 40 }}></div>
+        </div>
+      </header>
+
+      <Container>
 
       {mensagem.texto && (
         <Alert
@@ -343,7 +349,8 @@ const GerenciarProcedimentosVeterinarios = () => {
           )}
         </Card.Body>
       </Card>
-    </Container>
+      </Container>
+    </div>
   );
 };
 
