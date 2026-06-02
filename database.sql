@@ -128,7 +128,19 @@ CREATE TABLE IF NOT EXISTS adocoes (
     FOREIGN KEY (adotante_id) REFERENCES adotante(id)
 ) ENGINE=InnoDB;
 
--- 11. Tabela de Saídas de Estoque
+-- 11. Tabela de Movimentação Financeira
+CREATE TABLE IF NOT EXISTS financeiro (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipo ENUM('Entrada', 'Saída') NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL,
+    categoria VARCHAR(100) NOT NULL,
+    data_movimento DATE NOT NULL,
+    descricao TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- 12. Tabela de Saídas de Estoque
 CREATE TABLE IF NOT EXISTS saidas_estoque (
     id INT AUTO_INCREMENT PRIMARY KEY,
     estoque_id INT NOT NULL,

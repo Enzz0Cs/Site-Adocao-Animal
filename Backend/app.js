@@ -12,6 +12,7 @@ import procedimentosVeterinariosRoutes from './src/routes/procedimentosVeterinar
 import validacaoRoutes from "./src/routes/validacaoRoutes.js";
 import adocaoRoutes from "./src/routes/AdocaoRoutes.js";
 import veterinarioRoutes from './src/routes/VeterinarioRoutes.js';
+import financeiroRoutes from './src/routes/financeiroRoutes.js';
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use('/api', procedimentosVeterinariosRoutes);
 app.use("/api", validacaoRoutes);
 app.use("/api", adocaoRoutes);
 app.use('/api', veterinarioRoutes);
+app.use('/api', financeiroRoutes);
 
 app.use((req, res) => {
     res.status(404).json({ error: 'Rota não encontrada' });

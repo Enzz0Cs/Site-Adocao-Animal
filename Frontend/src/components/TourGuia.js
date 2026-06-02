@@ -65,6 +65,14 @@ const passosPorRota = {
     ).filter((item) => item.element !== '[data-tour="busca"]'),
     passo('[data-tour="historico"]', 'Histórico de saídas', 'Mostra as baixas realizadas, quantidade retirada, destino e responsável.', 'left')
   ],
+  '/financeiro': passosCrud(
+    'Financeiro',
+    'Registre e acompanhe as movimentações financeiras da instituição.',
+    'Informe o tipo (entrada ou saída), valor, categoria, data e uma descrição da origem ou destino do recurso.',
+    'Filtra por descrição ou categoria para encontrar movimentações específicas.',
+    'A tabela mostra tipo, valor, categoria, data e descrição. O rodapé exibe o total de entradas, saídas e o saldo.',
+    'O lápis carrega a movimentação no formulário para editar. A lixeira exclui o registro após confirmação.'
+  ),
   '/procedimentos-veterinarios': [
     ...passosCrud(
       'Procedimentos veterinários',

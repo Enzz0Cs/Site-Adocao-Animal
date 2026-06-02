@@ -17,6 +17,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import ProtectedRoute from './components/ProtectedRoute';
 import GerenciarProcedimentosVeterinarios from './components/GerenciarProcedimentosVeterinarios';
 import GerenciarVeterinarios from './components/GerenciarVeterinarios';
+import GerenciarFinanceiro from './components/GerenciarFinanceiro';
 import TourGuia from './components/TourGuia';
 import ConfirmacaoAdocao from './components/ConfirmacaoAdocao';
 import RedefinirSenha from './components/RedefinirSenha';
@@ -99,7 +100,18 @@ function App() {
               <ProtectedRoute niveisPermitidos={["admin", "responsavel_tecnico"]}>
                  <GerenciarVeterinarios />
               </ProtectedRoute>
-           </PrivateRoute>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/financeiro"
+          element={
+            <PrivateRoute>
+              <ProtectedRoute niveisPermitidos={["admin", "funcionario"]}>
+                <GerenciarFinanceiro />
+              </ProtectedRoute>
+            </PrivateRoute>
           }
         />
 
