@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Row, Col, Table, Card, Alert, Modal } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { ArrowLeft, Edit, Trash2, LogOut, History } from 'lucide-react';
+import { Edit, Trash2, LogOut, History } from 'lucide-react';
 import './EstilosAbrigo.css';
 import EstoqueService from '../services/EstoqueService';
+import PageHeader from './PageHeader';
 
 const GerenciarEstoque = () => {
     const [itens, setItens] = useState([]);
@@ -103,15 +103,7 @@ const GerenciarEstoque = () => {
 
     return (
         <div className="container-fluid p-0 min-vh-100 bg-light">
-            <header data-tour="page-header" className="navbar custom-navbar p-3 mb-4" style={{ backgroundColor: '#FF69B4' }}>
-                <div className="container-fluid">
-                    <Link to="/home" className="btn btn-dark">
-                        <ArrowLeft size={20} />
-                    </Link>
-                    <span className="text-white fw-bold">Controle de Estoque</span>
-                    <div style={{ width: 40 }}></div>
-                </div>
-            </header>
+            <PageHeader title="Controle de Estoque" />
 
             <Container>
 

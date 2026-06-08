@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Form, Button, Row, Col, Table, Card, Alert } from 'react-bootstrap';
-import { Edit, Trash2, ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Edit, Trash2 } from 'lucide-react';
 import './EstilosAbrigo.css';
+import PageHeader from './PageHeader';
 
 import AnimalService from '../services/AnimalService.js';
 import ProcedimentoVeterinarioService from '../services/ProcedimentoVeterinarioService.js';
@@ -160,17 +160,7 @@ const GerenciarProcedimentosVeterinarios = () => {
 
   return (
     <div className="container-fluid p-0 min-vh-100 bg-light">
-      <header data-tour="page-header" className="navbar custom-navbar p-3 mb-4" style={{ backgroundColor: '#FF69B4' }}>
-        <div className="container-fluid">
-          <Link to="/home" className="btn btn-dark">
-            <ArrowLeft size={20} />
-          </Link>
-          <span className="text-white fw-bold">
-            Controle de Procedimentos Veterinários
-          </span>
-          <div style={{ width: 40 }}></div>
-        </div>
-      </header>
+      <PageHeader title="Controle de Procedimentos Veterinários" />
 
       <Container>
 

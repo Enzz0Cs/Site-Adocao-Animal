@@ -1,18 +1,10 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft } from 'lucide-react';
+import PageHeader from './PageHeader';
 
 function Relatorios() {
     return (
         <div className="container-fluid p-0 min-vh-100 bg-light">
-            <header className="navbar custom-navbar p-3 mb-4" style={{ backgroundColor: '#FF69B4' }}>
-                <div className="container-fluid">
-                    <Link to="/home" className="btn btn-dark">
-                        <ArrowLeft size={20} />
-                    </Link>
-                    <span className="text-white fw-bold">Central de Relatórios</span>
-                    <div style={{ width: 40 }}></div>
-                </div>
-            </header>
+            <PageHeader title="Central de Relatórios" />
 
             <div className="container">
                 <div className="row g-4">

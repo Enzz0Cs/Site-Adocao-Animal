@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Row, Col, Card, InputGroup, Alert, Modal } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { ArrowLeft, PlusCircle, Pencil, Trash2, Search, ShieldCheck } from 'lucide-react';
+import { PlusCircle, Pencil, Trash2, Search, ShieldCheck } from 'lucide-react';
 import './EstilosAbrigo.css';
+import PageHeader from './PageHeader';
 
 import AnimalService from '../services/AnimalService';
 import VacinaService from '../services/VacinaService';
@@ -98,7 +98,11 @@ const GerenciadorAbrigoAnimais = () => {
             carregarAnimais();
         } catch (error) {
             console.error("Erro ao salvar:", error);
-            setMensagem({ tipo: 'danger', texto: 'Erro ao salvar. Verifique o console do VS Code.' });
+            const erroApi = error?.response?.data?.error;
+            setMensagem({
+                tipo: 'danger',
+                texto: erroApi || 'Não foi possível salvar o animal. Verifique os dados informados e tente novamente.'
+            });
         }
     };
 
@@ -161,21 +165,11 @@ const GerenciadorAbrigoAnimais = () => {
 
     return (
         <div className="container-fluid p-0 min-vh-100 bg-light">
-            <header data-tour="page-header" className="navbar custom-navbar shadow-sm p-3 mb-4 sticky-top">
-                <div className="container-fluid">
-                    <div className="d-flex align-items-center">
-                        <Link to="/home" className="btn btn-dark me-3">
-                            <ArrowLeft size={20} />
-                        </Link>
-                        <span className="navbar-brand custom-title text-white">
-                            🐾 Abrigo de Teodoro Sampaio
-                        </span>
-                    </div>
-                    <Button data-tour="abrir-formulario" className="custom-btn" onClick={() => handleShow()}>
-                        <PlusCircle size={18} className="me-2" /> Cadastrar
-                    </Button>
-                </div>
-            </header>
+            <PageHeader title="Abrigo de Teodoro Sampaio">
+                <Button data-tour="abrir-formulario" className="custom-btn" onClick={() => handleShow()}>
+                    <PlusCircle size={18} className="me-2" /> Cadastrar
+                </Button>
+            </PageHeader>
 
             <Container>
                 <InputGroup data-tour="busca" className="mb-4">
@@ -283,8 +277,9 @@ const GerenciadorAbrigoAnimais = () => {
                                 </Col>
                                 <Col md={4}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="fw-bold">Raça</Form.Label>
+                                        <Form.Label className="fw-bold">Raça *</Form.Label>
                                         <Form.Control
+                                            required
                                             placeholder="Ex: SRD, Poodle..."
                                             value={formData.raca}
                                             onChange={(e) => setFormData({ ...formData, raca: e.target.value })}

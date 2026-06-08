@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Row, Col, Card, Alert, Modal, InputGroup } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { ArrowLeft, PlusCircle, Search, Trash2 } from 'lucide-react';
+import { PlusCircle, Trash2 } from 'lucide-react';
 import './EstilosAbrigo.css';
+import PageHeader from './PageHeader';
 
 import AdocaoService from '../services/AdocaoService';
 import AnimalService from '../services/AnimalService';
@@ -118,24 +118,11 @@ const GerenciadorAdocoes = () => {
     return (
         <div className="container-fluid p-0 min-vh-100 bg-light">
 
-            {/* HEADER */}
-            <header data-tour="page-header" className="navbar custom-navbar p-3 mb-4" style={{ backgroundColor: '#FF69B4' }}>
-                <div className="container-fluid">
-
-                    <Link to="/home" className="btn btn-dark">
-                        <ArrowLeft size={20} />
-                    </Link>
-
-                    <span className="text-white fw-bold">
-                        🤝 Registro de Adoções
-                    </span>
-
-                    <Button data-tour="abrir-formulario" onClick={() => setShowModal(true)}>
-                        <PlusCircle size={18} /> Nova Adoção
-                    </Button>
-
-                </div>
-            </header>
+            <PageHeader title="Registro de Adoções">
+                <Button data-tour="abrir-formulario" onClick={() => setShowModal(true)}>
+                    <PlusCircle size={18} /> Nova Adoção
+                </Button>
+            </PageHeader>
 
             <Container>
 

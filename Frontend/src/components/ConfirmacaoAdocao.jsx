@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
+import PageHeader from './PageHeader';
 
 const ConfirmacaoAdocao = () => {
   const { token } = useParams();
@@ -23,8 +24,11 @@ const ConfirmacaoAdocao = () => {
   }, [token]);
 
   return (
-    <div className="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light">
-      <div className="card shadow-lg p-4" style={{ width: "450px", borderRadius: "15px" }}>
+    <div className="container-fluid p-0 min-vh-100 bg-light">
+      <PageHeader title="Confirmação de Adoção" backTo="/" />
+
+      <div className="d-flex align-items-center justify-content-center px-3" style={{ minHeight: 'calc(100vh - 96px)' }}>
+        <div className="card shadow-lg p-4" style={{ width: "450px", borderRadius: "15px" }}>
         <div className="text-center mb-4">
           <h2 className="fw-bold">🐾 Abrigo Teodoro</h2>
           {status === 'carregando' && <p className="text-muted">Confirmando adoção...</p>}
@@ -59,6 +63,7 @@ const ConfirmacaoAdocao = () => {
             <Link to="/" className="btn btn-primary w-100 fw-bold py-2">Voltar ao início</Link>
           </>
         )}
+        </div>
       </div>
     </div>
   );

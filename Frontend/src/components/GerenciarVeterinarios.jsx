@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Row, Col, Table, Card, InputGroup, Alert } from 'react-bootstrap';
-import { Edit, Trash2, Search, Stethoscope, ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Edit, Trash2, Search } from 'lucide-react';
 import './EstilosAbrigo.css';
 import VeterinarioService from '../services/VeterinarioService';
+import PageHeader from './PageHeader';
 
 function GerenciarVeterinarios() {
 
@@ -86,16 +86,10 @@ function GerenciarVeterinarios() {
   };
 
   return (
-    <Container className="mt-4 pb-5">
+    <div className="container-fluid p-0 min-vh-100 bg-light">
+      <PageHeader title="Gerenciar Veterinários" />
 
-      <header data-tour="page-header" className="d-flex align-items-center mb-4 gap-3">
-        <Link to="/home" className="btn btn-dark custom-btn-back" style={{ border: '1px solid #FF69B4' }}>
-          <ArrowLeft size={20} color="#FF69B4" />
-        </Link>
-        <h2 className="custom-subtitle m-0 d-flex align-items-center gap-2">
-          <Stethoscope size={30} /> Gerenciar Veterinários
-        </h2>
-      </header>
+      <Container className="pb-5">
 
       {mensagem.texto && (
         <Alert
@@ -320,7 +314,8 @@ function GerenciarVeterinarios() {
 
         </Table>
       </Card>
-    </Container>
+      </Container>
+    </div>
   );
 }
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import PageHeader from "./PageHeader";
 
 function RelatorioAdocoes() {
 
@@ -68,28 +68,17 @@ function RelatorioAdocoes() {
 
     return (
 
-        <div className="container mt-4">
-
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <Link
-                    to="/relatorios"
-                    className="btn btn-dark mb-4"
-                >
-                    ← Voltar
-                </Link>
-
-                <h2>
-                    🐾 Relatório de Adoções
-                </h2>
-
+        <div className="container-fluid p-0 min-vh-100 bg-light">
+            <PageHeader title="Relatório de Adoções" backTo="/relatorios">
                 <button
                     className="btn btn-danger"
                     onClick={exportarPDF}
                 >
                     Exportar PDF
                 </button>
+            </PageHeader>
 
-            </div>
+            <div className="container pb-5">
 
             {/* FILTRO */}
             <div className="row mb-4">
@@ -190,6 +179,7 @@ function RelatorioAdocoes() {
 
             </table>
 
+            </div>
         </div>
     );
 }

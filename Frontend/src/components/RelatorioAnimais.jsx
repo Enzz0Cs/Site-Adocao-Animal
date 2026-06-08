@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import axios from "axios";
+import PageHeader from "./PageHeader";
 
 function RelatorioAnimais() {
 
@@ -65,28 +65,17 @@ function RelatorioAnimais() {
     };
 
     return (
-        <div className="container mt-4">
-
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <Link
-                    to="/relatorios"
-                    className="btn btn-dark mb-4"
-                >
-                    ← Voltar
-                </Link>
-
-                <h2>
-                    📋 Relatório de Animais
-                </h2>
-
+        <div className="container-fluid p-0 min-vh-100 bg-light">
+            <PageHeader title="Relatório de Animais" backTo="/relatorios">
                 <button
                     className="btn btn-danger"
                     onClick={exportarPDF}
                 >
                     Exportar PDF
                 </button>
+            </PageHeader>
 
-            </div>
+            <div className="container pb-5">
 
             {/* FILTRO */}
             <div className="row mb-4">
@@ -153,6 +142,7 @@ function RelatorioAnimais() {
 
             </table>
 
+            </div>
         </div>
     );
 }

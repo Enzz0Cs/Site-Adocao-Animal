@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaPaw, FaUserFriends, FaChartBar, FaBoxes, FaUserCircle, FaHeart, FaStethoscope, FaDollarSign } from 'react-icons/fa';
 import './EstilosAbrigo.css';
+import PageHeader from './PageHeader';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -18,25 +19,21 @@ const Home = () => {
 
     return (
         <div className="container-fluid p-0 min-vh-100 bg-light">
-            <header data-tour="cabecalho" className="navbar custom-navbar shadow-sm p-4 mb-5" style={{ backgroundColor: '#FF69B4' }}>
-                <div className="container d-flex justify-content-between align-items-center">
-                    <h1 className="custom-title m-0 text-white">🐾 Abrigo Teodoro Sampaio</h1>
-
-                    <div data-tour="usuario" className="d-flex align-items-center gap-3">
-                        <div className="text-white d-flex align-items-center gap-2 border-end pe-3">
-                            <FaUserCircle size={25} />
-                            <div className="d-flex flex-column" style={{ lineHeight: '1.2' }}>
-                                <span className="fw-bold">{usuario.nome}</span>
-                                <small className="text-dark fw-bold" style={{ fontSize: '0.7rem', textTransform: 'uppercase' }}>
-                                    {usuario.nivel}
-                                </small>
-                            </div>
+            <PageHeader title="Abrigo Teodoro Sampaio" backTo={null} dataTour="cabecalho">
+                <div data-tour="usuario" className="d-flex align-items-center gap-3">
+                    <div className="text-white d-flex align-items-center gap-2 border-end pe-3">
+                        <FaUserCircle size={25} />
+                        <div className="d-flex flex-column" style={{ lineHeight: '1.2' }}>
+                            <span className="fw-bold">{usuario.nome}</span>
+                            <small className="text-dark fw-bold" style={{ fontSize: '0.7rem', textTransform: 'uppercase' }}>
+                                {usuario.nivel}
+                            </small>
                         </div>
-
-                        <button className="btn btn-dark btn-sm" onClick={logout}>Sair</button>
                     </div>
+
+                    <button className="btn btn-dark btn-sm" onClick={logout}>Sair</button>
                 </div>
-            </header>
+            </PageHeader>
 
             <main className="container pb-5">
                 <div data-tour="modulos" className="row justify-content-center g-4 text-center">
